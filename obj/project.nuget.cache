@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "PoaPjIZOqoo=",
+  "dgSpecHash": "FxcXLSs1yy4=",
   "success": true,
-  "projectFilePath": "/home/dani0tb/repos/duoc/capstone/DotnetAPI/DotnetAPI.csproj",
+  "projectFilePath": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
   "expectedPackageFiles": [
-    "/home/dani0tb/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
-    "/home/dani0tb/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+    "/home/slimdysk/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+    "/home/slimdysk/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
   ],
   "logs": []
 }

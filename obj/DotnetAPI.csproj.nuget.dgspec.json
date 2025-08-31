@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/dani0tb/repos/duoc/capstone/DotnetAPI/DotnetAPI.csproj": {}
+    "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {}
   },
   "projects": {
-    "/home/dani0tb/repos/duoc/capstone/DotnetAPI/DotnetAPI.csproj": {
+    "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dani0tb/repos/duoc/capstone/DotnetAPI/DotnetAPI.csproj",
+        "projectUniqueName": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
         "projectName": "DotnetAPI",
-        "projectPath": "/home/dani0tb/repos/duoc/capstone/DotnetAPI/DotnetAPI.csproj",
-        "packagesPath": "/home/dani0tb/.nuget/packages/",
-        "outputPath": "/home/dani0tb/repos/duoc/capstone/DotnetAPI/obj/",
+        "projectPath": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
+        "packagesPath": "/home/slimdysk/.nuget/packages/",
+        "outputPath": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/dani0tb/.nuget/NuGet/NuGet.Config"
+          "/home/slimdysk/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -68,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/dani0tb/.dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
