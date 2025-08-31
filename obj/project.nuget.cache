@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "PoaPjIZOqoo=",
+  "success": true,
+  "projectFilePath": "/home/dani0tb/repos/duoc/capstone/DotnetAPI/DotnetAPI.csproj",
+  "expectedPackageFiles": [
+    "/home/dani0tb/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+    "/home/dani0tb/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
