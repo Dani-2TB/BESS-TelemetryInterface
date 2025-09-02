@@ -30,6 +30,7 @@ app.UseHttpsRedirection();
 
 app.MapRazorPages();
 
+app.AddBessEndpoints();
 
 app.Run();
 
