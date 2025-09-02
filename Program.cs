@@ -4,13 +4,13 @@ using DotnetAPI.Data;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 Configure();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
@@ -21,6 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 app.MapRazorPages();
 
@@ -42,5 +43,8 @@ void Configure()
     {
         options.UseSqlite(DefaulConection);
     });
+    builder.Services.AddOpenApi();
+    builder.Services.AddRazorPages();
+    builder.Services.AddControllers();
 }
 
