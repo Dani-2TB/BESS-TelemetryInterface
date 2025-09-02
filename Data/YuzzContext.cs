@@ -3,15 +3,14 @@ using DotnetAPI.Models;
 
 namespace DotnetAPI.Data
 {
-    // Aquí defines la clase ApplicationDbContext
     public class YuzzContext : DbContext
     {
-    
-    public YuzzContext(DbContextOptions options): base(options) {}
+        
+        public YuzzContext(DbContextOptions options): base(options) {}
 
-    public DbSet<User> Users { get; set; }
-
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<Module> Modules { get; set;}
+        public DbSet<ConfigBess> ConfigBess { get; set;}
 
     }
 }
