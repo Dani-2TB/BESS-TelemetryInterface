@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
 
-
-
-
 var builder = WebApplication.CreateBuilder(args);
 Configure();
 

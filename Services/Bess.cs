@@ -15,7 +15,7 @@ public static class BessService
         
         bess.MapPost("/", async (Bess bess, YuzzContext db) => 
         {
-            await db.Bess.Add()
+            await db.Bess.Add();
             return Results.Created($"/bess/{bess.Id}", bess);
         });
     }
