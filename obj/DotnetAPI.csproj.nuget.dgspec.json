@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {}
+    "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {}
   },
   "projects": {
-    "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {
+    "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
+        "projectUniqueName": "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
         "projectName": "DotnetAPI",
-        "projectPath": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
-        "packagesPath": "/home/slimdysk/.nuget/packages/",
-        "outputPath": "/mnt/c/Users/polak/Documents/GitHub/CAPSTONE-2025-DUOCUC/DotnetAPI/obj/",
+        "projectPath": "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
+        "packagesPath": "/home/dani09tb/.nuget/packages/",
+        "outputPath": "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/slimdysk/.nuget/NuGet/NuGet.Config"
+          "/home/dani09tb/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -67,6 +67,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.8, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.4, )"
             }
           },
           "imports": [
@@ -88,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/dani09tb/.dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
