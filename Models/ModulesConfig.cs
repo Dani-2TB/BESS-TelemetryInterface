@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DotnetAPI.Models;
 
 public class ConfigBess{
+
     public Guid Id {get; set; }
 
     public required Guid ModuleId { get; set; }
