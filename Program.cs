@@ -25,6 +25,7 @@ app.MapControllers();
 app.MapRazorPages();
 
 app.AddModulesEndpoints();
+app.AddConfigBessEndpoints();
 
 app.Run();
 
