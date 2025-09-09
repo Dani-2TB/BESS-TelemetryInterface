@@ -29,6 +29,7 @@ var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
+        opt.MapInboundClaims = false; // Mantener los nombres originales de los claims
         opt.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
