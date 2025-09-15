@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {}
+    "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj": {}
   },
   "projects": {
-    "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj": {
+    "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
+        "projectUniqueName": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj",
         "projectName": "DotnetAPI",
-        "projectPath": "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/DotnetAPI.csproj",
-        "packagesPath": "/home/dani09tb/.nuget/packages/",
-        "outputPath": "/home/dani09tb/CAPSTONE-2025-DUOCUC/DotnetAPI/obj/",
+        "projectPath": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj",
+        "packagesPath": "/home/dysk/.nuget/packages/",
+        "outputPath": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/dani09tb/.nuget/NuGet/NuGet.Config"
+          "/home/dysk/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -44,6 +44,14 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.8, )"
+            },
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.3.1, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.8, )"
@@ -92,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/dani09tb/.dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,62 +1,64 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
-
-
-
+using DotnetAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-Configure();
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// DbContext
+builder.Services.AddDbContext<YuzzContext>(opt =>
+    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Password hasher
+builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
+
+// JWT (solo configuración para AddAuthentication)
+var key = builder.Configuration["Jwt:Key"]!;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI(options => 
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        options.RoutePrefix = string.Empty;
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapRazorPages();
+// >>> Endpoints de autenticación <<<
+app.MapAuthEndpoints();
 
-app.AddBessEndpoints();
+app.MapGet("/", () => Results.Ok(new { ok = true }));
 
-app.Run();
-
-
-void Configure()
+// Migraciones automáticas
+using (var scope = app.Services.CreateScope())
 {
-    IConfigurationSection Dbconfig = builder.Configuration.GetSection("ConnectionStrings");
-    string? DefaulConection = Dbconfig.GetSection("DefaultConnection").Value;
-
-    if (string.IsNullOrWhiteSpace(DefaulConection))
-    {
-        throw new ArgumentNullException();
-    }
-
-    builder.Services.AddDbContextPool<YuzzContext>(options =>
-    {
-        options.UseSqlite(DefaulConection);
-    });
-  
-    builder.Services.AddOpenApi();
-  
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
-    
-    builder.Services.AddRazorPages();
-    builder.Services.AddControllers();
+    var db = scope.ServiceProvider.GetRequiredService<YuzzContext>();
+    await db.Database.MigrateAsync();
 }
 
+app.Run();
