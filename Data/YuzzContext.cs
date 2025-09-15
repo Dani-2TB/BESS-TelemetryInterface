@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Models; // Module, ConfigBess
-using AuthApi.Models;   // AppUser
+//using AuthApi.Models;   // AppUser
 
 namespace DotnetAPI.Data;
 
