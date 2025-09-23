@@ -3,6 +3,7 @@ using System;
 using DotnetAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotnetAPI.Migrations
 {
     [DbContext(typeof(YuzzContext))]
-    partial class YuzzContextModelSnapshot : ModelSnapshot
+    [Migration("20250922220504_ImplementNewDbModel")]
+    partial class ImplementNewDbModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -52,7 +55,7 @@ namespace DotnetAPI.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_users_user_name");
 
-                    b.ToTable("Users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("DotnetAPI.Models.Domain.Battery", b =>

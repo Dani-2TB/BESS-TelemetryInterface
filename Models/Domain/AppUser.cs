@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
-
-
-namespace DotnetAPI.Models;
+namespace DotnetAPI.Models.Domain;
+[Table(name: "Users")]
 public class AppUser
 {
     public Guid Id { get; set; } = Guid.NewGuid();

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using DotnetAPI.Models; // Module, ConfigBess
-//using AuthApi.Models;   // AppUser
+using DotnetAPI.Models.Domain;
 
 namespace DotnetAPI.Data;
 
@@ -8,18 +7,17 @@ public class YuzzContext : DbContext
 {
     public YuzzContext(DbContextOptions<YuzzContext> options) : base(options) { }
 
-    // DbSets de tus modelos anteriores
-    public DbSet<Module> Modules { get; set; } = default!;
-    public DbSet<ConfigBess> ConfigBess { get; set; } = default!;
-    
-    // Usuarios para autenticación
-    public DbSet<AppUser> Users { get; set; } = default!;
+    public DbSet<OperationMode> OperationModes { get; set; }
+    public DbSet<Bess> Besses {get; set;}
+    public DbSet<Battery> Batteries {get; set;}
+    public DbSet<PcsModel> PcsModels {get; set;}
+    public DbSet<Pcs> Pcs {get; set;}
+    public DbSet<AppUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Reglas de unicidad para AppUser
         modelBuilder.Entity<AppUser>()
             .HasIndex(u => u.UserName)
             .IsUnique();
@@ -27,6 +25,44 @@ public class YuzzContext : DbContext
         modelBuilder.Entity<AppUser>()
             .HasIndex(u => u.Email)
             .IsUnique();
+
+        // Bess -> OperationMode
+        modelBuilder.Entity<Bess>()
+            .HasOne(b => b.OperationMode)
+            .WithMany()
+            .HasForeignKey(b => b.OperationModeId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("OPERATION_MODE_BESS");
+
+        // Battery -> Bess
+        modelBuilder.Entity<Battery>()
+            .HasOne(b => b.Bess)
+            .WithMany()
+            .HasForeignKey(b => b.BessId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("BESS_BATTERY");
+
+        // Pcs -> Battery
+        modelBuilder.Entity<Pcs>()
+            .HasOne(p => p.Battery)
+            .WithMany()
+            .HasForeignKey(p => p.BatteryId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("BATTERY_PCS");
+
+        // Pcs -> PcsModel
+        modelBuilder.Entity<Pcs>()
+            .HasOne(p => p.PcsModel)
+            .WithMany()
+            .HasForeignKey(p => p.PcsModelId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("PCS_MODEL");
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSnakeCaseNamingConvention();
     }
 }
 

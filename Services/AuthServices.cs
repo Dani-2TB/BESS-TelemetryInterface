@@ -1,12 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using DotnetAPI.Models;
+using DotnetAPI.Models.Domain;
 using DotnetAPI.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using DotnetAPI.Extensions;
 
+namespace DotnetAPI.Services;
 public static class AuthEndpoints
 {
     public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder routes)
@@ -33,14 +35,13 @@ public static class AuthEndpoints
             var userName = req.UserName.Trim();
             var email = req.Email.Trim().ToLowerInvariant();
 
-            if (await db.Users.AnyAsync(u => u.UserName == userName))
-                return Results.BadRequest(new { message = "UserName ya existe" });
+            var queriesResult = db.Users.Where(u => u.UserName == userName || u.Email == email);
 
-            if (await db.Users.AnyAsync(u => u.Email == email))
-                return Results.BadRequest(new { message = "Email ya registrado" });
+            if (queriesResult.Count() > 0)
+                return Results.BadRequest(new { message = "Error 4" });
 
             var user = new AppUser { UserName = userName, Email = email };
-            user.PasswordHash = hasher.HashPassword(user, req.Password);
+            user.PasswordHash = req.Password.HashPassword();
 
             db.Users.Add(user);
             await db.SaveChangesAsync();

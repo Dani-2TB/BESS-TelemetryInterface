@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj": {}
+    "/home/dani0tb/repos/yuzz/BESS-TelemetryInterface/DotnetAPI.csproj": {}
   },
   "projects": {
-    "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj": {
+    "/home/dani0tb/repos/yuzz/BESS-TelemetryInterface/DotnetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj",
+        "projectUniqueName": "/home/dani0tb/repos/yuzz/BESS-TelemetryInterface/DotnetAPI.csproj",
         "projectName": "DotnetAPI",
-        "projectPath": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj",
-        "packagesPath": "/home/dysk/.nuget/packages/",
-        "outputPath": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/obj/",
+        "projectPath": "/home/dani0tb/repos/yuzz/BESS-TelemetryInterface/DotnetAPI.csproj",
+        "packagesPath": "/home/dani0tb/.nuget/packages/",
+        "outputPath": "/home/dani0tb/repos/yuzz/BESS-TelemetryInterface/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/dysk/.nuget/NuGet/NuGet.Config"
+          "/home/dani0tb/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -44,6 +44,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "EFCore.NamingConventions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.8, )"
@@ -100,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/dani0tb/.dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
