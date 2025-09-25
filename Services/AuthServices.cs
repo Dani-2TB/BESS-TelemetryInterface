@@ -20,8 +20,8 @@ public static class AuthEndpoints
         var jwtSection = builder.Configuration.GetSection("Jwt");
         var issuer = jwtSection["Issuer"]!;
         var audience = jwtSection["Audience"]!;
-        var key = jwtSection["Key"]!;
-        var expiresMinutes = int.Parse(jwtSection["ExpiresMinutes"] ?? "60");
+        var key = builder.Configuration["JWT_TOKEN"]!;
+        var expiresMinutes = int.Parse(jwtSection["ExpiresMinutes"] ?? "10");
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
         // ---------- Endpoints ----------
@@ -29,8 +29,7 @@ public static class AuthEndpoints
         // Registrar usuario
         routes.MapPost("/auth/register", async (
             RegisterRequest req,
-            YuzzContext db,
-            IPasswordHasher<AppUser> hasher) =>
+            YuzzContext db) =>
         {
             var userName = req.UserName.Trim();
             var email = req.Email.Trim().ToLowerInvariant();

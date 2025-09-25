@@ -34,8 +34,10 @@ public static class Extensions
             result += c;
         }
 
-        return result; 
+        return result;
     }
+
+    
 }
 
 

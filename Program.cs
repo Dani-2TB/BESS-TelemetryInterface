@@ -20,13 +20,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+
+app.UseRouting();
+
 app.UseAuthorization();
 
-app.MapAuthEndpoints();
+app.UseAuthentication();
 
-app.MapGet("/", () => Results.Ok(new { ok = true }));
+//app.MapAuthEndpoints();
 
+app.MapStaticAssets();
+app.MapRazorPages();
 
 app.Run();
 
@@ -38,7 +42,7 @@ void Configure()
         opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     // JWT Configuration 
-    var key = builder.Configuration["Jwt:Key"]!;
+    var key = builder.Configuration["JWT_TOKEN"]!;
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -56,7 +60,9 @@ void Configure()
         });
 
     builder.Services.AddAuthorization();
-    
+
+    builder.Services.AddRazorPages();
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 }
