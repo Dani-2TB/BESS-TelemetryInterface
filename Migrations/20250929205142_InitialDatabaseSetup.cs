@@ -6,60 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DotnetAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class ImplementNewDbModel : Migration
+    public partial class InitialDatabaseSetup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ConfigBess");
-
-            migrationBuilder.DropTable(
-                name: "Modules");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.RenameTable(
-                name: "Users",
-                newName: "users");
-
-            migrationBuilder.RenameColumn(
-                name: "Email",
-                table: "users",
-                newName: "email");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "users",
-                newName: "id");
-
-            migrationBuilder.RenameColumn(
-                name: "UserName",
-                table: "users",
-                newName: "user_name");
-
-            migrationBuilder.RenameColumn(
-                name: "PasswordHash",
-                table: "users",
-                newName: "password_hash");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Users_Email",
-                table: "users",
-                newName: "ix_users_email");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Users_UserName",
-                table: "users",
-                newName: "ix_users_user_name");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "pk_users",
-                table: "users",
-                column: "id");
-
             migrationBuilder.CreateTable(
                 name: "operation_modes",
                 columns: table => new
@@ -88,6 +39,20 @@ namespace DotnetAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_pcs_model", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    user_name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    password_hash = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,6 +150,18 @@ namespace DotnetAPI.Migrations
                 name: "ix_pcs_pcs_model_id",
                 table: "PCS",
                 column: "PCS_MODEL_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_users_email",
+                table: "Users",
+                column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_users_user_name",
+                table: "Users",
+                column: "user_name",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -192,6 +169,9 @@ namespace DotnetAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "PCS");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "BATTERY");
@@ -204,86 +184,6 @@ namespace DotnetAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "operation_modes");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "pk_users",
-                table: "users");
-
-            migrationBuilder.RenameTable(
-                name: "users",
-                newName: "Users");
-
-            migrationBuilder.RenameColumn(
-                name: "email",
-                table: "Users",
-                newName: "Email");
-
-            migrationBuilder.RenameColumn(
-                name: "id",
-                table: "Users",
-                newName: "Id");
-
-            migrationBuilder.RenameColumn(
-                name: "user_name",
-                table: "Users",
-                newName: "UserName");
-
-            migrationBuilder.RenameColumn(
-                name: "password_hash",
-                table: "Users",
-                newName: "PasswordHash");
-
-            migrationBuilder.RenameIndex(
-                name: "ix_users_email",
-                table: "Users",
-                newName: "IX_Users_Email");
-
-            migrationBuilder.RenameIndex(
-                name: "ix_users_user_name",
-                table: "Users",
-                newName: "IX_Users_UserName");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "Id");
-
-            migrationBuilder.CreateTable(
-                name: "Modules",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 120, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Modules", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ConfigBess",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ModuleId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    MaxDCCurrent = table.Column<int>(type: "INTEGER", nullable: false),
-                    MinDCCurrent = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConfigBess", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ConfigBess_Modules_ModuleId",
-                        column: x => x.ModuleId,
-                        principalTable: "Modules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ConfigBess_ModuleId",
-                table: "ConfigBess",
-                column: "ModuleId");
         }
     }
 }

@@ -1,0 +1,90 @@
+@page
+@model DotnetAPI.Pages.Admin.BatteryPage.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Battery</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Battery.Id" />
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.Name" class="control-label"></label>
+                <input asp-for="Battery.Name" class="form-control" />
+                <span asp-validation-for="Battery.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.SocMax" class="control-label"></label>
+                <input asp-for="Battery.SocMax" class="form-control" />
+                <span asp-validation-for="Battery.SocMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.SocMin" class="control-label"></label>
+                <input asp-for="Battery.SocMin" class="form-control" />
+                <span asp-validation-for="Battery.SocMin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.CurrentMax" class="control-label"></label>
+                <input asp-for="Battery.CurrentMax" class="form-control" />
+                <span asp-validation-for="Battery.CurrentMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.VoltageMax" class="control-label"></label>
+                <input asp-for="Battery.VoltageMax" class="form-control" />
+                <span asp-validation-for="Battery.VoltageMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.VoltageMin" class="control-label"></label>
+                <input asp-for="Battery.VoltageMin" class="form-control" />
+                <span asp-validation-for="Battery.VoltageMin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.VotageAbsorption" class="control-label"></label>
+                <input asp-for="Battery.VotageAbsorption" class="form-control" />
+                <span asp-validation-for="Battery.VotageAbsorption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.CurrentCharging" class="control-label"></label>
+                <input asp-for="Battery.CurrentCharging" class="form-control" />
+                <span asp-validation-for="Battery.CurrentCharging" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.PwrMax" class="control-label"></label>
+                <input asp-for="Battery.PwrMax" class="form-control" />
+                <span asp-validation-for="Battery.PwrMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Battery.BessId" class="control-label"></label>
+                <select asp-for="Battery.BessId" class="form-control" asp-items="ViewBag.BessId"></select>
+                <span asp-validation-for="Battery.BessId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

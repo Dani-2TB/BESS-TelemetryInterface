@@ -1,0 +1,60 @@
+@page
+@model DotnetAPI.Pages.Admin.PcsModelPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PcsModel[0].RatedPower)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PcsModel[0].VoltageMaxDc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PcsModel[0].VoltageMinDc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PcsModel[0].CurrentMaxDc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PcsModel[0].Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.PcsModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RatedPower)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoltageMaxDc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoltageMinDc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentMaxDc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
