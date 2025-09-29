@@ -2,19 +2,19 @@
 @model DotnetAPI.Pages.Admin.OperationModePage.IndexModel
 
 @{
-    ViewData["Title"] = "Listado de Modos de Operación";
+    ViewData["Title"] = "Operation Modes";
 }
 
-<h1>Index</h1>
+<h1>Operation Modes</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a class="btn btn-success" asp-page="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OperationMode[0].Name)
+                Operation Modes List
             </th>
             <th></th>
         </tr>
