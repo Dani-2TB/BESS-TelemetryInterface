@@ -36,8 +36,6 @@ public static class Extensions
 
         return result;
     }
-
-    
 }
 
 
