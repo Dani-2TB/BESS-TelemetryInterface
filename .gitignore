@@ -485,4 +485,4 @@ $RECYCLE.BIN/
 .vscode
 DotnetAPI.db
 DotnetAPI.http
-DotnetAPI.sln
+*.sln
