@@ -1,3 +1,55 @@
 @page
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
 
-<h1>Admin Panel Goes Here</h1>
+<h1>Panel de Administración</h1>
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h5 class="card-title">Baterías</h5>
+                <p class="card-text">Gestiona las baterías del sistema.</p>
+                <a asp-page="./BatteryPage/Index" class="btn btn-primary">Ir a Baterías</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h5 class="card-title">BESS</h5>
+                <p class="card-text">Administra los sistemas BESS.</p>
+                <a asp-page="./BessPage/Index" class="btn btn-primary">Ir a BESS</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h5 class="card-title">Modos de Operación</h5>
+                <p class="card-text">Configura los modos de operación.</p>
+                <a asp-page="./OperationModePage/Index" class="btn btn-primary">Ir a Modos de Operación</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h5 class="card-title">Modelos PCS</h5>
+                <p class="card-text">Gestiona los modelos PCS.</p>
+                <a asp-page="./PcsModelPage/Index" class="btn btn-primary">Ir a Modelos PCS</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h5 class="card-title">PCS</h5>
+                <p class="card-text">Administra los PCS del sistema.</p>
+                <a asp-page="./PcsPage/Index" class="btn btn-primary">Ir a PCS</a>
+            </div>
+        </div>
+    </div>
+</div>

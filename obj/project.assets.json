@@ -9314,19 +9314,19 @@
     ]
   },
   "packageFolders": {
-    "/home/dani09tb/.nuget/packages/": {}
+    "/home/dysk/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/dani09tb/capstone/BESS-TelemetryInterface/DotnetAPI.csproj",
+      "projectUniqueName": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj",
       "projectName": "DotnetAPI",
-      "projectPath": "/home/dani09tb/capstone/BESS-TelemetryInterface/DotnetAPI.csproj",
-      "packagesPath": "/home/dani09tb/.nuget/packages/",
-      "outputPath": "/home/dani09tb/capstone/BESS-TelemetryInterface/obj/",
+      "projectPath": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/DotnetAPI.csproj",
+      "packagesPath": "/home/dysk/.nuget/packages/",
+      "outputPath": "/home/dysk/Escritorio/CapstonDuoc/BESS-TelemetryInterface/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/dani09tb/.nuget/NuGet/NuGet.Config"
+        "/home/dysk/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -9424,7 +9424,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/home/dani09tb/.dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
