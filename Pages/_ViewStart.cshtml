@@ -1,3 +1,10 @@
+@using Microsoft.AspNetCore.Authorization
 @{
     Layout = "_Layout";
+}
+
+[Authorize]
+public class IndexModel : PageModel
+{
+    // ...
 }

@@ -53,3 +53,21 @@
         </div>
     </div>
 </div>
+
+<script>
+const token = localStorage.getItem('jwtToken');
+fetch('/api/datos-protegidos', {
+    headers: {
+        'Authorization': 'Bearer ' + token
+    }
+})
+.then(response => {
+    if (response.status === 401) {
+        window.location.href = "/Auth/Index";
+    }
+    return response.json();
+})
+.then(data => {
+    // Usa los datos protegidos
+});
+</script>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DotnetAPI.Services;
+using DotnetAPI.Models.Domain; // <-- Agrega esta línea
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,11 +28,10 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();   // <-- Debe ir primero
+app.UseAuthorization();    // <-- Luego esta
 
-app.UseAuthentication();
-
-//app.MapAuthEndpoints();
+app.MapAuthEndpoints();
 
 app.MapStaticAssets();
 app.MapRazorPages();
@@ -50,6 +50,18 @@ void Configure()
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var token = context.Request.Cookies["jwtToken"];
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        context.Token = token;
+                    }
+                    return Task.CompletedTask;
+                }
+            };
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -65,7 +77,14 @@ void Configure()
 
     builder.Services.AddAuthorization();
 
-    builder.Services.AddRazorPages();
+    builder.Services.AddRazorPages(options =>
+    {
+        options.Conventions.AuthorizeFolder("/Admin");
+        options.Conventions.AllowAnonymousToPage("/Auth/Index");
+    });
+    builder.Services.AddHttpClient(); 
+
+    builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

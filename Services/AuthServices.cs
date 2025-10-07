@@ -27,26 +27,29 @@ public static class AuthEndpoints
         // ---------- Endpoints ----------
 
         // Registrar usuario
-        routes.MapPost("/auth/register", async (
-            RegisterRequest req,
-            YuzzContext db) =>
+        routes.MapPost("/auth/register", async (RegisterRequest req, YuzzContext db, IPasswordHasher<AppUser> hasher) =>
         {
-            var userName = req.UserName.Trim();
-            var email = req.Email.Trim().ToLowerInvariant();
+            if (string.IsNullOrWhiteSpace(req.UserName) || string.IsNullOrWhiteSpace(req.Email) || string.IsNullOrWhiteSpace(req.Password))
+            {
+                return Results.BadRequest(new { message = "Todos los campos son obligatorios." });
+            }
 
-            var queriesResult = db.Users.Where(u => u.UserName == userName || u.Email == email);
+            var exists = await db.Users.AnyAsync(u => u.UserName == req.UserName || u.Email == req.Email);
+            if (exists)
+            {
+                return Results.Conflict(new { message = "El usuario o email ya existe." });
+            }
 
-            if (queriesResult.Count() > 0)
-                return Results.BadRequest(new { message = "Error 4" });
-
-            var user = new AppUser { UserName = userName, Email = email };
-            user.PasswordHash = req.Password.HashPassword();
-
+            var user = new AppUser
+            {
+                UserName = req.UserName,
+                Email = req.Email,
+                PasswordHash = hasher.HashPassword(null, req.Password) // <-- Cambia esto
+            };
             db.Users.Add(user);
             await db.SaveChangesAsync();
 
-            return Results.Created($"/users/{user.Id}",
-                new { user.Id, user.UserName, user.Email });
+            return Results.Created($"/users/{user.Id}", new { message = "Usuario registrado correctamente." });
         });
 
         // Login
@@ -86,13 +89,9 @@ public static class AuthEndpoints
                 signingCredentials: creds
             );
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return Results.Ok(new AuthResponse
-            {
-                AccessToken = jwt,
-                ExpiresAtUtc = expires
-            });
+            return Results.Ok(new { token = jwtToken });
         });
 
         // Usuario autenticado
@@ -113,4 +112,12 @@ public static class AuthEndpoints
 
         return routes;
     }
+}
+
+// Modelo para el registro
+public class RegisterRequest
+{
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 }
