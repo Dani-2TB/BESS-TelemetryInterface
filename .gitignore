@@ -486,3 +486,4 @@ $RECYCLE.BIN/
 DotnetAPI.db
 DotnetAPI.http
 *.sln
+*.db*
