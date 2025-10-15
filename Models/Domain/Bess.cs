@@ -15,5 +15,5 @@ public class Bess
     public int CurrentMaxAcOut { get; set; }
     [Required, Column(name: "OPERATION_MODE_id")]
     public int OperationModeId { get; set; }
-    public OperationMode? OperationMode { get; set; }
+    public OperationMode OperationMode { get; set; } = null!;
 }
