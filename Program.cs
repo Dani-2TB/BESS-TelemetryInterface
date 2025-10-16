@@ -5,7 +5,6 @@ using DotnetAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using DotnetAPI.Services;
 using DotnetAPI.Models.Domain; // <-- Agrega esta línea
 
 var builder = WebApplication.CreateBuilder(args);
