@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotnetAPI.Migrations
 {
     [DbContext(typeof(YuzzContext))]
-    [Migration("20250930012305_InitialCreate")]
+    [Migration("20251016152122_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

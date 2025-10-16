@@ -4,7 +4,7 @@ using DotnetAPI.Models.Domain;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotnetAPI.Pages.Admin;
+namespace DotnetAPI.Pages.BessAdmin;
 
 public class IndexModel: PageModel
 {

@@ -1,5 +1,5 @@
 @page
-@model DotnetAPI.Pages.Admin.IndexModel;
+@model DotnetAPI.Pages.BessAdmin.IndexModel;
 
 @{
     ViewData["Title"] = "Bess Administration";
@@ -10,7 +10,7 @@
   <div class="col-12 rounded border border-2 px-5 py-4 mb-4">
     <div class="row">
       <h2>
-        @Html.DisplayNameFor(model => model.Bess.Name): 
+        Configuration Name:
         @Html.DisplayFor(model => model.Bess.Name)
         <span class="text-gray">|</span> 
         <span class="text-orange">
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="col-12 px-0 mb-5">
-    <a class="btn btn-primary d-block" asp-page="/Admin/BessPage/Index">Configure Bess</a>
+    <a class="btn btn-primary d-block" asp-page="/Admin/BessPage/Index">Manage Bess Configuration</a>
   </div>
   <div class="col-12 mb-5 px-0">
     <div class="mb-3">
@@ -52,7 +52,7 @@
         <span>@Html.DisplayFor(model => model.NumberOfBatteries)</span>
       </h3>
     </div>
-    <a class="btn btn-primary d-block" asp-page="/Admin/BatteryPage/Index"> View Batteries </a>
+    <a class="btn btn-primary d-block" asp-page="/Admin/BatteryPage/Index"> Manage Batteries </a>
 
   </div>
   <div class="col-12 px-0">
@@ -60,7 +60,7 @@
       <h3>Number of PCS in BESS: 
         <span>@Html.DisplayFor(model => model.NumberOfPcs)</span>
       </h3>
-      <a class="btn btn-primary d-block" asp-page="/Admin/PcsPage/Index"> View PCSs</a>
+      <a class="btn btn-primary d-block" asp-page="/Admin/PcsPage/Index"> Manage PCSs</a>
     </div>
   </div>
 </div>
