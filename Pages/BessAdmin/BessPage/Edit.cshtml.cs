@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 
-namespace DotnetAPI.Pages.Admin.BessPage
+namespace DotnetAPI.Pages.BessAdmin.BessPage
 {
     public class EditModel : PageModel
     {
-        private readonly DotnetAPI.Data.YuzzContext _context;
+        private readonly YuzzContext _context;
 
-        public EditModel(DotnetAPI.Data.YuzzContext context)
+        public EditModel(YuzzContext context)
         {
             _context = context;
         }
@@ -30,13 +26,14 @@ namespace DotnetAPI.Pages.Admin.BessPage
                 return NotFound();
             }
 
-            var bess =  await _context.Besses.FirstOrDefaultAsync(m => m.Id == id);
+            var bess =  await _context.Besses
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (bess == null)
             {
                 return NotFound();
             }
             Bess = bess;
-           ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
+            ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
             return Page();
         }
 
@@ -46,6 +43,14 @@ namespace DotnetAPI.Pages.Admin.BessPage
         {
             if (!ModelState.IsValid)
             {
+                foreach (var entry in ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        Console.WriteLine($"Campo: {entry.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+                ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
                 return Page();
             }
 
@@ -67,7 +72,7 @@ namespace DotnetAPI.Pages.Admin.BessPage
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/BessAdmin/Index");
         }
 
         private bool BessExists(int id)

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 
-namespace DotnetAPI.Pages.Admin.BessPage
+namespace DotnetAPI.Pages.BessAdmin.BessPage
 {
     public class DeleteModel : PageModel
     {

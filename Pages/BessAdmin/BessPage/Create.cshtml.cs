@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 
-namespace DotnetAPI.Pages.Admin.BessPage
+namespace DotnetAPI.Pages.BessAdmin.BessPage
 {
     public class CreateModel : PageModel
     {
-        private readonly DotnetAPI.Data.YuzzContext _context;
+        private readonly YuzzContext _context;
 
-        public CreateModel(DotnetAPI.Data.YuzzContext context)
+        public CreateModel(YuzzContext context)
         {
             _context = context;
         }

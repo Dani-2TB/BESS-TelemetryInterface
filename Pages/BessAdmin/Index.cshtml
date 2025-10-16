@@ -44,23 +44,27 @@
     </div>
   </div>
   <div class="col-12 px-0 mb-5">
-    <a class="btn btn-primary d-block" asp-page="/Admin/BessPage/Index">Manage Bess Configuration</a>
+    <a class="btn btn-primary d-block" asp-page="./BessPage/Edit" asp-route-id="@Model.Bess.Id">Manage Bess Configuration</a>
   </div>
   <div class="col-12 mb-5 px-0">
     <div class="mb-3">
-      <h3>Number of Batteries in BESS: 
-        <span>@Html.DisplayFor(model => model.NumberOfBatteries)</span>
+      <h3>
+        There are <span>@Html.DisplayFor(model => model.NumberOfBatteries)</span>
+        Batteries in BESS 
       </h3>
     </div>
-    <a class="btn btn-primary d-block" asp-page="/Admin/BatteryPage/Index"> Manage Batteries </a>
+    <a class="btn btn-primary d-block" asp-page="./BatteryPage/Index"> Manage Batteries </a>
 
   </div>
-  <div class="col-12 px-0">
-    <div class="mb-3">
-      <h3>Number of PCS in BESS: 
-        <span>@Html.DisplayFor(model => model.NumberOfPcs)</span>
-      </h3>
-      <a class="btn btn-primary d-block" asp-page="/Admin/PcsPage/Index"> Manage PCSs</a>
+  @if (Model.NumberOfBatteries > 0) {
+    <div class="col-12 px-0">
+      <div class="mb-3">
+        <h3>
+          There are <span>@Html.DisplayFor(model => model.NumberOfPcs)</span>
+          Power Conversion Systems in BESS 
+        </h3>
+        <a class="btn btn-primary d-block" asp-page="./PcsPage/Index"> Manage Power Conversion Systems</a>
+      </div>
     </div>
-  </div>
+  }
 </div>

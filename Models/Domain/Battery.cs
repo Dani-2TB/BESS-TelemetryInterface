@@ -37,5 +37,5 @@ public class Battery
 
     [Required, Column(name: "BESS_id")]
     public int BessId { get; set; }
-    public Bess Bess { get; set; } = null!;
+    public Bess? Bess { get; set; }
 }
