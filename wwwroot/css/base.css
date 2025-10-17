@@ -89,3 +89,25 @@ body {
     border-color: white !important;
 
 }
+
+.form-control {
+    padding: 10px 10px;
+    border: 2px solid white;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 14pt;
+    margin-bottom: 10px;
+}
+
+.form-control:focus {
+    background-color: #000000;
+    color: #ffffff;
+    outline: 1px solid #DF5500;
+    box-shadow: 0 0 4px 3px #DF5500;
+    border-color: #ffffff;
+}
+
+.control-label {
+    font-size: 16pt;
+    margin-bottom: 5px;
+}

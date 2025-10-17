@@ -1,12 +1,11 @@
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
-
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotnetAPI.Pages.BessAdmin;
 
-public class IndexModel: PageModel
+public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
 
@@ -21,7 +20,7 @@ public class IndexModel: PageModel
     public Bess Bess { get; set; } = default!;
     public int NumberOfBatteries = 0;
     public int NumberOfPcs = 0;
-    
+
     public async Task OnGetAsync()
     {
         Bess = await _context.Besses
