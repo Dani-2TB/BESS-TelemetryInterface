@@ -32,6 +32,9 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
             {
                 return NotFound();
             }
+            bess.CurrentMaxAcOut /= 1000;
+            bess.CurrentMaxAcIn /= 1000;
+            
             Bess = bess;
             ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
             return Page();
@@ -41,15 +44,11 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            Bess.CurrentMaxAcIn *= 1000;
+            Bess.CurrentMaxAcOut *= 1000;
+
             if (!ModelState.IsValid)
             {
-                foreach (var entry in ModelState)
-                {
-                    foreach (var error in entry.Value.Errors)
-                    {
-                        Console.WriteLine($"Campo: {entry.Key}, Error: {error.ErrorMessage}");
-                    }
-                }
                 ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
                 return Page();
             }

@@ -33,12 +33,12 @@
         <label asp-for="Bess.OperationModeId" class="control-label"></label>
         <select asp-for="Bess.OperationModeId" class="form-control" asp-items="ViewBag.OperationModeId"></select>
       </div>
-      <div class="form-group mt-3 d-flex">
-        <button type="submit" value="Save" class="btn btn-primary d-block">Save</button>
+      <div class="form-group mt-3 w-100">
+        <button type="submit" value="Save" class="btn btn-primary d-block w-100">Save</button>
+      </div>
+      <div class="d-block mt-3">
+        <a class="btn btn-primary d-block" asp-page="/BessAdmin/Index">Back</a>
       </div>
     </form>
-  </div>
-  <div class="d-block mt-3">
-    <a class="btn btn-primary d-block" asp-page="/BessAdmin/Index">Back</a>
   </div>
 </div>

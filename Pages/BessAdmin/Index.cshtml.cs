@@ -31,9 +31,9 @@ public class IndexModel : PageModel
             .Where(b => b.BessId == Bess.Id)
             .CountAsync();
 
-        NumberOfPcs = await _context.Batteries
-            .Where(p => _context.Batteries
-                .Any(b => b.Id == p.Id && b.Id == Bess.Id))
+        NumberOfPcs = await _context.Pcs
+            .Include(p => p.Battery)
+            .Where(p => p.Battery.BessId == Bess.Id)
             .CountAsync();
     }
 }

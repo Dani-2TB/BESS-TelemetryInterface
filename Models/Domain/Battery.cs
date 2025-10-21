@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,31 +12,31 @@ public class Battery
     [Required]
     public string Name { get; set; } = "noname";
 
-    [Required]
+    [Required, DisplayName("Max Soc Threshold")]
     public int SocMax { get; set; }
 
-    [Required]
+    [Required, DisplayName("Min Soc Threshold")]
     public int SocMin { get; set; }
 
-    [Required]
+    [Required, DisplayName("Max Current")]
     public int CurrentMax { get; set; }
 
-    [Required]
+    [Required, DisplayName("Max Voltage")]
     public int VoltageMax { get; set; }
 
-    [Required]
+    [Required, DisplayName("Min Voltage")]
     public int VoltageMin { get; set; }
 
-    [Required]
+    [Required, DisplayName("Voltage Absorption")]
     public int VotageAbsorption { get; set; }
 
-    [Required]
+    [Required, DisplayName("Current Charging")]
     public int CurrentCharging { get; set; }
 
-    [Required]
+    [Required, DisplayName("Max Power")]
     public int PwrMax { get; set; }
 
-    [Required, Column(name: "BESS_id")]
+    [Required, Column(name: "BESS_id"), DisplayName("Bess Configuration")]
     public int BessId { get; set; }
     public Bess? Bess { get; set; }
 }
