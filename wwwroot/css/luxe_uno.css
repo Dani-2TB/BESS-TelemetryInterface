@@ -1,0 +1,90 @@
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-UltraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-Heavy.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-ThinItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-SemiBoldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'LuxeUno';
+  src: url('/fonts/LuxeUno-HeavyItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}

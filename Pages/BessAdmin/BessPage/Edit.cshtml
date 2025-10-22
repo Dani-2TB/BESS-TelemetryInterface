@@ -1,0 +1,44 @@
+@page
+@model DotnetAPI.Pages.BessAdmin.BessPage.EditModel
+
+@{
+  ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Bess</h4>
+<hr />
+<div class="row">
+  <div class="col-md-6 mx-auto">
+    <form method="post">
+      <input type="hidden" asp-for="Bess.Id" />
+      <div class="form-group mb-2">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.Name" class="control-label"></label>
+        <input asp-for="Bess.Name" class="form-control" />
+      </div>
+      <div class="form-group mb-2">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.CurrentMaxAcIn" class="control-label"></label>
+        <input asp-for="Bess.CurrentMaxAcIn" class="form-control" />
+      </div>
+      <div class="form-group mb-2">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.CurrentMaxAcOut" class="control-label"></label>
+        <input asp-for="Bess.CurrentMaxAcOut" class="form-control" />
+      </div>
+      <div class="form-group mb-2">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.OperationModeId" class="control-label"></label>
+        <select asp-for="Bess.OperationModeId" class="form-control" asp-items="ViewBag.OperationModeId"></select>
+      </div>
+      <div class="form-group mt-3 w-100">
+        <button type="submit" value="Save" class="btn btn-primary d-block w-100">Save</button>
+      </div>
+      <div class="d-block mt-3">
+        <a class="btn btn-primary d-block" asp-page="/BessAdmin/Index">Back</a>
+      </div>
+    </form>
+  </div>
+</div>

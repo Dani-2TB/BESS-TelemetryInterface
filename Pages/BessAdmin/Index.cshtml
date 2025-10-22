@@ -1,0 +1,70 @@
+@page
+@model DotnetAPI.Pages.BessAdmin.IndexModel;
+
+@{
+    ViewData["Title"] = "Bess Administration";
+}
+
+<h1 class="mx-0 fw-5 mb-3 text-center">@ViewData["Title"]</h1>
+<div class="row">
+  <div class="col-12 rounded border border-2 px-5 py-4 mb-4">
+    <div class="row">
+      <h2>
+        Configuration Name:
+        @Html.DisplayFor(model => model.Bess.Name)
+        <span class="text-gray">|</span> 
+        <span class="text-orange">
+            @Html.DisplayNameFor(model => model.Bess.Id) :
+            @Html.DisplayFor(model => model.Bess.Id)
+        </span>
+      </h2>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="data-section col-6">
+        <h3>
+          Maximun AC current input:
+          <span class="text-orange">
+              @Html.DisplayFor(model => model.Bess.CurrentMaxAcIn)
+          </span>
+        </h3>
+        <h3>
+          Maximun AC current output:
+          <span class="text-orange">
+              @Html.DisplayFor(model => model.Bess.CurrentMaxAcOut)
+          </span>
+      </div>
+      <div class="col-6">
+        <h3>Operation Mode:  
+          <span class="text-orange fs-3">
+            @Html.DisplayFor(model => model.Bess.OperationMode.Name)
+          </span>
+        </h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 px-0 mb-5">
+    <a class="btn btn-primary d-block" asp-page="./BessPage/Edit" asp-route-id="@Model.Bess.Id">Manage Bess Configuration</a>
+  </div>
+  <div class="col-12 mb-5 px-0">
+    <div class="mb-3">
+      <h3>
+        There are <span>@Html.DisplayFor(model => model.NumberOfBatteries)</span>
+        Batteries in BESS 
+      </h3>
+    </div>
+    <a class="btn btn-primary d-block" asp-page="./BatteryPage/Index"> Manage Batteries </a>
+
+  </div>
+  @if (Model.NumberOfBatteries > 0) {
+    <div class="col-12 px-0">
+      <div class="mb-3">
+        <h3>
+          There are <span>@Html.DisplayFor(model => model.NumberOfPcs)</span>
+          Power Conversion Systems in BESS 
+        </h3>
+        <a class="btn btn-primary d-block" asp-page="./PcsPage/Index"> Manage Power Conversion Systems</a>
+      </div>
+    </div>
+  }
+</div>

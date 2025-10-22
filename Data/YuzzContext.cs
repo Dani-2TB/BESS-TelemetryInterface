@@ -12,7 +12,7 @@ public class YuzzContext : DbContext
     public DbSet<Battery> Batteries {get; set;}
     public DbSet<PcsModel> PcsModels {get; set;}
     public DbSet<Pcs> Pcs {get; set;}
-    public DbSet<AppUser> Users { get; set; }
+    // public DbSet<AppUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
