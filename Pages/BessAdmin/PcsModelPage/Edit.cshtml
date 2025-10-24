@@ -1,0 +1,60 @@
+@page
+@model DotnetAPI.Pages.Admin.PcsModelPage.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PcsModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PcsModel.Id" />
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="PcsModel.RatedPower" class="control-label"></label>
+                <input asp-for="PcsModel.RatedPower" class="form-control" />
+                <span asp-validation-for="PcsModel.RatedPower" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="PcsModel.VoltageMaxDc" class="control-label"></label>
+                <input asp-for="PcsModel.VoltageMaxDc" class="form-control" />
+                <span asp-validation-for="PcsModel.VoltageMaxDc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="PcsModel.VoltageMinDc" class="control-label"></label>
+                <input asp-for="PcsModel.VoltageMinDc" class="form-control" />
+                <span asp-validation-for="PcsModel.VoltageMinDc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="PcsModel.CurrentMaxDc" class="control-label"></label>
+                <input asp-for="PcsModel.CurrentMaxDc" class="form-control" />
+                <span asp-validation-for="PcsModel.CurrentMaxDc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="PcsModel.Name" class="control-label"></label>
+                <input asp-for="PcsModel.Name" class="form-control" />
+                <span asp-validation-for="PcsModel.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

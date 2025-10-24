@@ -15,7 +15,7 @@ namespace DotnetAPI.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
 
             modelBuilder.Entity("DotnetAPI.Models.Domain.AppUser", b =>
                 {
@@ -42,17 +42,17 @@ namespace DotnetAPI.Migrations
                         .HasColumnName("user_name");
 
                     b.HasKey("Id")
-                        .HasName("pk_users");
+                        .HasName("pk_app_user");
 
                     b.HasIndex("Email")
                         .IsUnique()
-                        .HasDatabaseName("ix_users_email");
+                        .HasDatabaseName("ix_app_user_email");
 
                     b.HasIndex("UserName")
                         .IsUnique()
-                        .HasDatabaseName("ix_users_user_name");
+                        .HasDatabaseName("ix_app_user_user_name");
 
-                    b.ToTable("Users");
+                    b.ToTable("APP-USER");
                 });
 
             modelBuilder.Entity("DotnetAPI.Models.Domain.Battery", b =>

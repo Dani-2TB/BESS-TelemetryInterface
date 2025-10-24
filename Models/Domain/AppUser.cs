@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotnetAPI.Models.Domain;
-[Table(name: "Users")]
+[Table(name: "APP-USER")]
 public class AppUser
 {
     public Guid Id { get; set; } = Guid.NewGuid();
