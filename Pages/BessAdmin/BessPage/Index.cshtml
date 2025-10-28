@@ -8,49 +8,18 @@
 <h1>Bess List</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Bess[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bess[0].CurrentMaxAcIn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bess[0].CurrentMaxAcOut)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bess[0].OperationMode)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
+
+<div class="row">
 @foreach (var item in Model.Bess) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentMaxAcIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentMaxAcOut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OperationMode.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<div class="col">
+</div>
 }
-    </tbody>
+</div>
+
 </table>
 <a asp-page="/Admin/Index" class="btn btn-dark">
-Admin Dashboard</a>
+    Admin Dashboard
+</a>

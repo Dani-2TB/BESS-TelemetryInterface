@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,16 +9,16 @@ public class PcsModel
 {
     public int Id { get; set; }
 
-    [Required]
+    [Required, DisplayName("Rated Power")]
     public int RatedPower { get; set; }
 
-    [Required]
+    [Required, DisplayName("Max Voltage DC")]
     public int VoltageMaxDc { get; set; }
 
-    [Required]
+    [Required, DisplayName("Min Voltage DC")]
     public int VoltageMinDc { get; set; }
 
-    [Required]
+    [Required, DisplayName("Max Current DC")]
     public int CurrentMaxDc { get; set; }
 
     [Required]

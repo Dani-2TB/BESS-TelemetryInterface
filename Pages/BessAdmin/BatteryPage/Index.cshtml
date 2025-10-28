@@ -10,83 +10,15 @@
 <p>
     <a asp-page="Create" class="btn btn-primary">Add Battery</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].SocMax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].SocMin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].CurrentMax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].VoltageMax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].VoltageMin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].VotageAbsorption)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].CurrentCharging)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].PwrMax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Battery[0].Bess)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
+<div class="row d-flex flex-column align-items-center gap-3">
 @foreach (var item in Model.Battery) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocMax)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocMin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentMax)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoltageMax)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoltageMin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VotageAbsorption)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentCharging)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PwrMax)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bess.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+	<div class="col-6 border border-2 rounded p-2">
+		<h2>@Html.DisplayFor(modelItem => item.Name)</h2>
+		
+	</div>
 }
-    </tbody>
-</table>
+</div>
+
 <a asp-page="/Admin/index" class="btn btn-dark">
 Admin Dashboard</a>

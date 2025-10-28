@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - Yuzz</title>
+  <script type="importmap"></script>
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+</head>
+
+<body class="d-flex flex-column vh-100">
+  <header>
+    @await Html.PartialAsync("_Navbar")
+  </header>
+  <div class="h-100 w-100">
+      @RenderBody()
+  </div>
+
+  <footer class="border-top footer py-3">
+    <div class="container text-center">
+      <img src="~/images/logo.png" class="img-fluid" style="max-height: 20px" />
+      <span class="fw-1">- Bess telemetry and configuration</span>
+    </div>
+  </footer>
+
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
