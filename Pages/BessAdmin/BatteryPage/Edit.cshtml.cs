@@ -36,7 +36,7 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
                 return NotFound();
             }
             Battery = battery;
-           ViewData["BessId"] = new SelectList(_context.Besses, "Id", "Name");
+            ViewData["BessId"] = new SelectList(_context.Besses, "Id", "Name");
             return Page();
         }
 
@@ -44,6 +44,7 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["BessId"] = new SelectList(_context.Besses, "Id", "Name");
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -65,6 +66,10 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
                 {
                     throw;
                 }
+            }
+            catch (DbUpdateException)
+            {
+                return Page();
             }
 
             return RedirectToPage("./Index");

@@ -16,8 +16,9 @@
       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
       <input type="hidden" asp-for="Pcs.Id" class="form-control"/>
       <div class="col-4">
-        <label for="Pcs.ModbusId" class="form-label"></label>
-        <input asp-for="Pcs.ModbusId" type="number">
+        <span class="text-danger">*</span>
+        <label asp-for="Pcs.ModbusId" class="form-label"></label>
+        <input asp-for="Pcs.ModbusId" type="number" class="form-control">
       </div>
       <div class="col-12">
         <span class="text-danger">*</span>

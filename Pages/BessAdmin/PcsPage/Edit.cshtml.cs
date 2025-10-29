@@ -45,10 +45,11 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
+            ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
+
             if (!ModelState.IsValid)
             {
-                ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
-                ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
                 return Page();
             }
 
@@ -69,9 +70,13 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
                     throw;
                 }
             }
+            catch (DbUpdateException)
+            {
+                return Page();
+            }
 
             return RedirectToPage("./Index");
-        }
+            }
 
         private bool PcsExists(int id)
         {

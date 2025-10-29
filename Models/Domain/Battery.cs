@@ -9,7 +9,7 @@ public class Battery
 {
     public int Id { get; set; }
 
-    [Required]
+    [Required, DisplayName("Modbus ID")]
     public int ModbusId { get; set; }
 
     [Required]

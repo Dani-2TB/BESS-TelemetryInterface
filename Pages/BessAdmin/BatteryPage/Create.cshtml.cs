@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,9 +33,19 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             {
                 return Page();
             }
+            
+            try
+            {
+                _context.Batteries.Add(Battery);
+                await _context.SaveChangesAsync();
 
-            _context.Batteries.Add(Battery);
-            await _context.SaveChangesAsync();
+            } catch (DbUpdateException)
+            {
+                ViewData["DatabaseUpdate"] = "Unique Constraint Error";
+                return Page();
+            }
+
+
 
             return RedirectToPage("./Index");
         }

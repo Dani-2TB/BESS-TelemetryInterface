@@ -27,13 +27,21 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Besses.Add(Bess);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Besses.Add(Bess);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return Page();
+            }
 
             return RedirectToPage("./Index");
         }

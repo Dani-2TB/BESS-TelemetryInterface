@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
+using Microsoft.EntityFramewrokCore;
 
 namespace DotnetAPI.Pages.BessAdmin.PcsPage
 {
@@ -21,8 +22,8 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
 
         public IActionResult OnGet()
         {
-        ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
-        ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
+            ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
+            ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
             return Page();
         }
 
@@ -32,13 +33,22 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
+            ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Pcs.Add(Pcs);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Pcs.Add(Pcs);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return Page();
+            }
 
             return RedirectToPage("./Index");
         }

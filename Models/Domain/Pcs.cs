@@ -9,6 +9,7 @@ public class Pcs
 {
     public int Id { get; set; }
 
+    [Required, DisplayName("Modbus ID")]
     public int ModbusId { get; set; }
 
     [Required, Column(name: "BATTERY_id"), DisplayName("Battery")]
