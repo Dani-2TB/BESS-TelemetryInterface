@@ -1,5 +1,5 @@
 @page
-@model DotnetAPI.Pages.Admin.PcsPage.CreateModel
+@model DotnetAPI.Pages.BessAdmin.PcsPage.CreateModel
 
         @{
         ViewData["Title"] = "Create";
@@ -13,6 +13,11 @@
     <div class="col-md-4">
     <form method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Pcs.ModbusId" class="control-label"></label>
+                <select asp-for="Pcs.ModbusId" class ="form-control" asp-items="ViewBag.BatteryId"></select>
+            </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
                 <label asp-for="Pcs.BatteryId" class="control-label"></label>

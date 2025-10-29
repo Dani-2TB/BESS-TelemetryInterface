@@ -1,24 +1,29 @@
 @page
-@model DotnetAPI.Pages.Admin.BatteryPage.IndexModel
+@model DotnetAPI.Pages.BessAdmin.BatteryPage.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create" class="btn btn-primary">Add Battery</a>
-</p>
-
-<div class="row d-flex flex-column align-items-center gap-3">
-@foreach (var item in Model.Battery) {
-	<div class="col-6 border border-2 rounded p-2">
-		<h2>@Html.DisplayFor(modelItem => item.Name)</h2>
-		
-	</div>
-}
+<hr />
+<div class="d-flex gap-4 justify-content-center">
+	<a asp-page="/BessAdmin/index" class="btn btn-list">Back</a>
+	<a asp-page="Create" class="btn btn-list">Add Battery</a>
 </div>
+<hr class="" />
+	<div class="row d-flex flex-column align-items-center gap-3">
+	@foreach (var item in Model.Battery) {
+		<div class="col-6 border border-2 rounded p-2 d-flex flex-wrap">
+			<h2 class="w-100">
+				Battery: @Html.DisplayFor(modelItem => item.Name)
+			</h2>
+			<p>
+				Bess Configuration: @Html.DisplayFor(modelItem => item.Bess.Name)
+			</p>
+			<div class="ms-auto">
+				<a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-list">Edit</a>
+				<a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-list">Delete</a>
+			</div>
+		</div>
+	}
+	</div>
 
-<a asp-page="/Admin/index" class="btn btn-dark">
-Admin Dashboard</a>

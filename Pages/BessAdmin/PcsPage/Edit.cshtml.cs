@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 
-namespace DotnetAPI.Pages.Admin.PcsPage
+namespace DotnetAPI.Pages.BessAdmin.PcsPage
 {
     public class EditModel : PageModel
     {
@@ -36,8 +36,8 @@ namespace DotnetAPI.Pages.Admin.PcsPage
                 return NotFound();
             }
             Pcs = pcs;
-           ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
-           ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
+            ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
+            ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
             return Page();
         }
 
@@ -47,6 +47,8 @@ namespace DotnetAPI.Pages.Admin.PcsPage
         {
             if (!ModelState.IsValid)
             {
+                ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
+                ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
                 return Page();
             }
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 
-namespace DotnetAPI.Pages.Admin.PcsModelPage
+namespace DotnetAPI.Pages.BessAdmin.PcsModelPage
 {
     public class CreateModel : PageModel
     {

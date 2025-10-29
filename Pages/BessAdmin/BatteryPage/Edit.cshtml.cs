@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 
-namespace DotnetAPI.Pages.Admin.BatteryPage
+namespace DotnetAPI.Pages.BessAdmin.BatteryPage
 {
     public class EditModel : PageModel
     {

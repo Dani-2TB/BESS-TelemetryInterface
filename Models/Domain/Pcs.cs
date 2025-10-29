@@ -9,6 +9,8 @@ public class Pcs
 {
     public int Id { get; set; }
 
+    public int ModbusId { get; set; }
+
     [Required, Column(name: "BATTERY_id"), DisplayName("Battery")]
     public int BatteryId { get; set; }
     public Battery? Battery { get; set; }

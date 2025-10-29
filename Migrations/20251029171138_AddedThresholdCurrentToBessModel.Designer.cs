@@ -3,6 +3,7 @@ using System;
 using DotnetAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotnetAPI.Migrations
 {
     [DbContext(typeof(YuzzContext))]
-    partial class YuzzContextModelSnapshot : ModelSnapshot
+    [Migration("20251029171138_AddedThresholdCurrentToBessModel")]
+    partial class AddedThresholdCurrentToBessModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -74,10 +77,6 @@ namespace DotnetAPI.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("current_max");
 
-                    b.Property<int>("ModbusId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("modbus_id");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -112,10 +111,6 @@ namespace DotnetAPI.Migrations
 
                     b.HasIndex("BessId")
                         .HasDatabaseName("ix_battery_bess_id");
-
-                    b.HasIndex("ModbusId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_battery_modbus_id");
 
                     b.ToTable("BATTERY");
                 });
@@ -186,10 +181,6 @@ namespace DotnetAPI.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("BATTERY_id");
 
-                    b.Property<int>("ModbusId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("modbus_id");
-
                     b.Property<int>("PcsModelId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("PCS_MODEL_id");
@@ -199,10 +190,6 @@ namespace DotnetAPI.Migrations
 
                     b.HasIndex("BatteryId")
                         .HasDatabaseName("ix_pcs_battery_id");
-
-                    b.HasIndex("ModbusId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_pcs_modbus_id");
 
                     b.HasIndex("PcsModelId")
                         .HasDatabaseName("ix_pcs_pcs_model_id");

@@ -14,8 +14,11 @@ public class Bess
     public int CurrentMaxAcIn { get; set; }
     [Required, DisplayName("AC Current Output Max (A)")]
     public int CurrentMaxAcOut { get; set; }
+
+    [Required, DisplayName("Threshold Current")]
+    public int ThresholdCurrent { get; set; }
+
     [Required, Column(name: "OPERATION_MODE_id"), DisplayName("Operation Mode")]
     public int OperationModeId { get; set; }
     public OperationMode? OperationMode { get; set; }
-
 }

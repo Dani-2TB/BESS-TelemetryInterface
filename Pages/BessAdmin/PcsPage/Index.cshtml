@@ -1,45 +1,29 @@
 @page
-@model DotnetAPI.Pages.Admin.PcsPage.IndexModel
+@model DotnetAPI.Pages.BessAdmin.PcsPage.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
+<div class="d-flex gap-4 justify-content-center">
+	<a asp-page="/BessAdmin/index" class="btn btn-list">Back</a>
+	<a asp-page="Create" class="btn btn-list">Add Pcs</a>
+</div>
+<hr class="" />
+	<div class="row d-flex flex-column align-items-center gap-3">
+	@foreach (var item in Model.Pcs) {
+		<div class="col-6 border border-2 rounded p-2 d-flex flex-wrap">
+			<h2 class="w-100">
+				@Html.DisplayFor(modelItem => item.PcsModel.Name)
+				<span>| ID: @Html.DisplayFor(modelItem => item.Id)</span>
+			</h2>
+			<p>
+				Battery: @Html.DisplayFor(modelItem => item.Battery.Name) | ID: @Html.DisplayFor(modelItem => item.Battery.Id)
+			</p>
+			<div class="ms-auto">
+				<a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-list">Edit</a>
+				<a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-list">Delete</a>
+			</div>
+		</div>
+	}
+	</div>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Pcs[0].Battery)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pcs[0].PcsModel)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Pcs) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Battery.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PcsModel.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<a asp-page="/Admin/index" class="btn btn-dark">
-    Admin Dashboard
-</a>

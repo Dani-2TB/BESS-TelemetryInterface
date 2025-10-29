@@ -5,39 +5,44 @@
   ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="row d-flex">
+  <a class="btn btn-list" asp-page="/BessAdmin/Index">Back</a>
+</div>
 
-<h4>Bess</h4>
 <hr />
 <div class="row">
-  <div class="col-md-6 mx-auto">
-    <form method="post">
+  <div class="col-md-8 mx-auto">
+    <form method="post" class="row border border-2 rounded p-4">
+      <h3>Bess Configuration</h3>
       <input type="hidden" asp-for="Bess.Id" />
-      <div class="form-group mb-2">
+
+      <div class="col-12">
         <span class="text-danger">*</span>
         <label asp-for="Bess.Name" class="control-label"></label>
         <input asp-for="Bess.Name" class="form-control" />
       </div>
-      <div class="form-group mb-2">
+      <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Bess.CurrentMaxAcIn" class="control-label"></label>
         <input asp-for="Bess.CurrentMaxAcIn" class="form-control" />
       </div>
-      <div class="form-group mb-2">
+      <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Bess.CurrentMaxAcOut" class="control-label"></label>
         <input asp-for="Bess.CurrentMaxAcOut" class="form-control" />
       </div>
-      <div class="form-group mb-2">
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.ThresholdCurrent" class="control-label"></label>
+        <input asp-for="Bess.ThresholdCurrent" class="form-control" />
+      </div>
+      <div class="col-12">
         <span class="text-danger">*</span>
         <label asp-for="Bess.OperationModeId" class="control-label"></label>
         <select asp-for="Bess.OperationModeId" class="form-control" asp-items="ViewBag.OperationModeId"></select>
       </div>
-      <div class="form-group mt-3 w-100">
+      <div class="col-12 mt-4">
         <button type="submit" value="Save" class="btn btn-primary d-block w-100">Save</button>
-      </div>
-      <div class="d-block mt-3">
-        <a class="btn btn-primary d-block" asp-page="/BessAdmin/Index">Back</a>
       </div>
     </form>
   </div>

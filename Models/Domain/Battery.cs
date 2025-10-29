@@ -10,6 +10,9 @@ public class Battery
     public int Id { get; set; }
 
     [Required]
+    public int ModbusId { get; set; }
+
+    [Required]
     public string Name { get; set; } = "noname";
 
     [Required, DisplayName("Max Soc Threshold")]
@@ -28,7 +31,7 @@ public class Battery
     public int VoltageMin { get; set; }
 
     [Required, DisplayName("Voltage Absorption")]
-    public int VotageAbsorption { get; set; }
+    public int VoltageAbsorption { get; set; }
 
     [Required, DisplayName("Current Charging")]
     public int CurrentCharging { get; set; }

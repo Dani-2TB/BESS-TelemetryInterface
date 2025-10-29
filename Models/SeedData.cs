@@ -28,8 +28,8 @@ public static class SeedData
                 return; // Database is seeded
             }
 
-            var onGrid = new OperationMode { Name = "On Grid" };
-            var offGrid = new OperationMode { Name = "Off Grid" };
+            var onGrid = new OperationMode { Name = "on_grid" };
+            var offGrid = new OperationMode { Name = "off_grid" };
 
             context.OperationModes.AddRange(onGrid, offGrid);
 

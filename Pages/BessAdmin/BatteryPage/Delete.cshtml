@@ -1,5 +1,5 @@
 @page
-@model DotnetAPI.Pages.Admin.BatteryPage.DeleteModel
+@model DotnetAPI.Pages.BessAdmin.BatteryPage.DeleteModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -49,10 +49,10 @@
             @Html.DisplayFor(model => model.Battery.VoltageMin)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Battery.VotageAbsorption)
+            @Html.DisplayNameFor(model => model.Battery.VoltageAbsorption)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Battery.VotageAbsorption)
+            @Html.DisplayFor(model => model.Battery.VoltageAbsorption)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Battery.CurrentCharging)
