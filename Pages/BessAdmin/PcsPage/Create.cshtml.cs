@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
-using Microsoft.AspNetCore.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotnetAPI.Pages.BessAdmin.PcsPage
 {
