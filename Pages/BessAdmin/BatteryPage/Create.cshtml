@@ -15,60 +15,72 @@
   <div class="col-8 mx-auto">
     <form method="post" class="row border border-2 rounded px-2 py-4">
       <h3 class="mb-3">Add Battery</h3>
+      <div asp-validation-summary="ModelOnly" class="text-yuzz-purple"></div>
       <div class="col-3">
         <span class="text-danger">*</span>
         <label asp-for="Battery.ModbusId" class="form-label"></label>
         <input asp-for="Battery.ModbusId" type="number" class="form-control">
+        <span asp-validation-for="Battery.ModbusId" class="text-yuzz-purple"></span>
       </div>
       <div class="col-9">
         <span class="text-danger">*</span>
         <label asp-for="Battery.Name" class="form-label"></label>
         <input asp-for="Battery.Name" type="text" class="form-control">
+        <span asp-validation-for="Battery.Name" class="text-yuzz-purple"></span>
       </div>
       <div class="col-6">
         <span class="text-danger">*</span>
         <label asp-for="Battery.SocMax" class="form-label"></label>
         <input asp-for="Battery.SocMax" type="number" class="form-control">
+        <span asp-validation-for="Battery.SocMax" class="text-yuzz-purple"></span>
       </div>
       <div class="col-6">
         <span class="text-danger">*</span>
         <label asp-for="Battery.SocMin" class="form-label"></label>
         <input asp-for="Battery.SocMin" type="number" class="form-control">
+        <span asp-validation-for="Battery.SocMin" class="text-yuzz-purple"></span>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Battery.CurrentMax" class="form-label"></label>
         <input asp-for="Battery.CurrentMax" type="number" class="form-control">
+        <span asp-validation-for="Battery.CurrentMax" class="text-yuzz-purple"></span>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Battery.VoltageMax" class="form-label"></label>
         <input asp-for="Battery.VoltageMax" type="number" class="form-control">
+        <span asp-validation-for="Battery.VoltageMax" class="text-yuzz-purple"></span>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Battery.VoltageMin" class="form-label"></label>
         <input asp-for="Battery.VoltageMin" type="number" class="form-control">
+        <span asp-validation-for="Battery.VoltageMin" class="text-yuzz-purple"></span>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Battery.VoltageAbsorption" class="form-label"></label>
         <input asp-for="Battery.VoltageAbsorption" type="number" class="form-control">
+        <span asp-validation-for="Battery.VoltageAbsorption" class="text-yuzz-purple"></span>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Battery.CurrentCharging" class="form-label"></label>
         <input asp-for="Battery.CurrentCharging" type="number" class="form-control">
+        <span asp-validation-for="Battery.CurrentCharging" class="text-yuzz-purple"></span>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
         <label asp-for="Battery.PwrMax" class="form-label"></label>
         <input asp-for="Battery.PwrMax" type="number" class="form-control">
+        <span asp-validation-for="Battery.PwrMax" class="text-yuzz-purple"></span>
       </div>
       <div class="col-12">
         <span class="text-danger">*</span>
         <label asp-for="Battery.BessId" class="form-label"></label>
         <select asp-for="Battery.BessId" class ="form-control" asp-items="ViewBag.BessId"></select>
+        <span asp-validation-for="Battery.BessId" class="text-yuzz-purple fs-5"></span>
       </div>
       <div class="col-12 mt-3">
         <button type="submit" class="btn btn-primary w-100">Save</button>

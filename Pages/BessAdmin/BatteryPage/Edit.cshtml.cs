@@ -35,6 +35,18 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             {
                 return NotFound();
             }
+
+            // Scale before displaying.
+            battery.CurrentMax /= 1000;
+            battery.CurrentCharging /= 1000;
+
+            battery.VoltageMax /= 1000;
+            battery.VoltageMin /= 1000;
+            battery.VoltageAbsorption /= 1000;
+
+            battery.PwrMax /= 1000;
+
+
             Battery = battery;
             ViewData["BessId"] = new SelectList(_context.Besses, "Id", "Name");
             return Page();
@@ -50,6 +62,16 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
                 return Page();
             }
 
+            // Scale before saving
+            Battery.CurrentMax *= 1000;
+            Battery.CurrentCharging *= 1000;
+
+            Battery.VoltageMax *= 1000;
+            Battery.VoltageMin *= 1000;
+            Battery.VoltageAbsorption *= 1000;
+
+            Battery.PwrMax *= 1000;
+            
             _context.Attach(Battery).State = EntityState.Modified;
 
             try
