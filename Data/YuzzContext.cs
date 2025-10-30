@@ -49,6 +49,11 @@ public class YuzzContext : DbContext
             .HasForeignKey(b => b.BessId)
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("BESS_BATTERY");
+        
+        // Autoincrement modbus_id
+        modelBuilder.Entity<Battery>()
+            .Property(b => b.ModbusId)
+            .ValueGeneratedOnAdd();
 
         // Add modbus_id unique field
         modelBuilder.Entity<Battery>()
@@ -70,6 +75,11 @@ public class YuzzContext : DbContext
             .HasForeignKey(p => p.PcsModelId)
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("PCS_MODEL");
+
+        // Autoincrement modbus_id
+        modelBuilder.Entity<Pcs>()
+            .Property(p => p.ModbusId)
+            .ValueGeneratedOnAdd();
 
         // Agregar modbus_id editable
         modelBuilder.Entity<Pcs>()
