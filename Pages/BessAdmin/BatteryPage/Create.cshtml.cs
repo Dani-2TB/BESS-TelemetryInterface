@@ -31,8 +31,19 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             ViewData["BessId"] = new SelectList(_context.Besses, "Id", "Name");
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("Error");
                 return Page();
             }
+
+            // Scale before saving
+            Battery.CurrentMax *= 1000;
+            Battery.CurrentCharging *= 1000;
+
+            Battery.VoltageMax *= 1000;
+            Battery.VoltageMin *= 1000;
+            Battery.VoltageAbsorption *= 1000;
+
+            Battery.PwrMax *= 1000;
             
             try
             {

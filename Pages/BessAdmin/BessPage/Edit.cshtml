@@ -5,13 +5,13 @@
   ViewData["Title"] = "Edit";
 }
 
-<div class="row d-flex">
+<div class="d-flex gap-4">
   <a class="btn btn-list" asp-page="/BessAdmin/Index">Back</a>
 </div>
 
 <hr />
 <div class="row">
-  <div class="col-md-8 mx-auto">
+  <div class="col-md-10 mx-auto">
     <form method="post" class="row border border-2 rounded p-4">
       <h3>Bess Configuration</h3>
       <input type="hidden" asp-for="Bess.Id" />
@@ -24,7 +24,7 @@
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
-        <label asp-for="Bess.CurrentMaxAcIn" class="from-label"></label>
+        <label asp-for="Bess.CurrentMaxAcIn" class="form-label"></label>
         <input asp-for="Bess.CurrentMaxAcIn" class="form-control" />
       </div>
       <div class="col-4">
