@@ -8,11 +8,11 @@ namespace DotnetAPI.Models.Domain;
 public class Bess
 {
     public int Id { get; set; }
-    [Required]
+    [Required, MaxLength(130)]
     public string Name { get; set; } = "noname";
-    [Required, DisplayName("AC Current Input Max (A)")]
+    [Required, DisplayName("AC Current Input Max (A)"), Range(0,sizeof(UInt32))]
     public int CurrentMaxAcIn { get; set; }
-    [Required, DisplayName("AC Current Output Max (A)")]
+    [Required, DisplayName("AC Current Output Max (A)"), Range(0,sizeof(UInt32))]
     public int CurrentMaxAcOut { get; set; }
 
     [Required, DisplayName("Threshold Current")]
