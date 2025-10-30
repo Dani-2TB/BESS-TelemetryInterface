@@ -18,27 +18,28 @@
 
       <div class="col-12">
         <span class="text-danger">*</span>
-        <label asp-for="Bess.Name" class="control-label"></label>
+        <label asp-for="Bess.Name" class="form-label"></label>
         <input asp-for="Bess.Name" class="form-control" />
+        <p class="form-text">Must not excede 130 Characters</p>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
-        <label asp-for="Bess.CurrentMaxAcIn" class="control-label"></label>
+        <label asp-for="Bess.CurrentMaxAcIn" class="from-label"></label>
         <input asp-for="Bess.CurrentMaxAcIn" class="form-control" />
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
-        <label asp-for="Bess.CurrentMaxAcOut" class="control-label"></label>
+        <label asp-for="Bess.CurrentMaxAcOut" class="form-label"></label>
         <input asp-for="Bess.CurrentMaxAcOut" class="form-control" />
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
-        <label asp-for="Bess.ThresholdCurrent" class="control-label"></label>
+        <label asp-for="Bess.ThresholdCurrent" class="form-label"></label>
         <input asp-for="Bess.ThresholdCurrent" class="form-control" />
       </div>
       <div class="col-12">
         <span class="text-danger">*</span>
-        <label asp-for="Bess.OperationModeId" class="control-label"></label>
+        <label asp-for="Bess.OperationModeId" class="form-label"></label>
         <select asp-for="Bess.OperationModeId" class="form-control" asp-items="ViewBag.OperationModeId"></select>
       </div>
       <div class="col-12 mt-4">

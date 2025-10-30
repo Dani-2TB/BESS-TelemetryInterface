@@ -1,48 +1,49 @@
 @page
 @model DotnetAPI.Pages.BessAdmin.BessPage.CreateModel
 
-        @{
-        ViewData["Title"] = "Create";
-        }
-        
-        <h1>Create</h1>
-        
-    <h4>Bess</h4>
-    <hr />
-    <div class="row">
-    <div class="col-md-4">
-    <form method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Bess.Name" class="control-label"></label>
-                <input asp-for="Bess.Name" class="form-control" />
-                <span asp-validation-for="Bess.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Bess.CurrentMaxAcIn" class="control-label"></label>
-                <input asp-for="Bess.CurrentMaxAcIn" class="form-control" />
-                <span asp-validation-for="Bess.CurrentMaxAcIn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Bess.CurrentMaxAcOut" class="control-label"></label>
-                <input asp-for="Bess.CurrentMaxAcOut" class="form-control" />
-                <span asp-validation-for="Bess.CurrentMaxAcOut" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Bess.OperationModeId" class="control-label"></label>
-                <select asp-for="Bess.OperationModeId" class ="form-control" asp-items="ViewBag.OperationModeId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+@{
+  ViewData["Title"] = "Create";
+}
+
+<div class="row d-flex">
+  <a class="btn btn-list" asp-page="/BessAdmin/Index">Back</a>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
+<hr />
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <form method="post" class="row border border-2 rounded p-4">
+      <h3>Add Bess Configuration</h3>
+      <input type="hidden" asp-for="Bess.Id" />
+
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.Name" class="form-label"></label>
+        <input asp-for="Bess.Name" class="form-control" />
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.CurrentMaxAcIn" class="from-label"></label>
+        <input asp-for="Bess.CurrentMaxAcIn" class="form-control" />
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.CurrentMaxAcOut" class="form-label"></label>
+        <input asp-for="Bess.CurrentMaxAcOut" class="form-control" />
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.ThresholdCurrent" class="form-label"></label>
+        <input asp-for="Bess.ThresholdCurrent" class="form-control" />
+      </div>
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Bess.OperationModeId" class="form-label"></label>
+        <select asp-for="Bess.OperationModeId" class="form-control" asp-items="ViewBag.OperationModeId"></select>
+      </div>
+      <div class="col-12 mt-4">
+        <button type="submit" value="Save" class="btn btn-primary d-block w-100">Save</button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -10,14 +10,10 @@ public class Battery
 {
     public int Id { get; set; }
 
-<<<<<<< HEAD
-    [Required, DisplayName("Modbus ID")]
+    [Required, Range(0,255)]
     public int ModbusId { get; set; }
 
-    [Required]
-=======
     [Required, MaxLength(120)]
->>>>>>> 3826126 (feat: added model validations)
     public string Name { get; set; } = "noname";
 
     [Required, DisplayName("Max Soc Threshold"), Range(0, 100)]
@@ -35,13 +31,8 @@ public class Battery
     [Required, DisplayName("Min Voltage"), Range(0,sizeof(UInt32))]
     public int VoltageMin { get; set; }
 
-<<<<<<< HEAD
-    [Required, DisplayName("Voltage Absorption")]
-    public int VoltageAbsorption { get; set; }
-=======
     [Required, DisplayName("Voltage Absorption"), Range(0,sizeof(UInt32))]
-    public int VotageAbsorption { get; set; }
->>>>>>> 3826126 (feat: added model validations)
+    public int VoltageAbsorption { get; set; }
 
     [Required, DisplayName("Current Charging"), Range(0,sizeof(UInt32))]
     public int CurrentCharging { get; set; }
