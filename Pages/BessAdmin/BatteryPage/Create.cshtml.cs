@@ -52,7 +52,7 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
 
             } catch (DbUpdateException)
             {
-                ViewData["DatabaseUpdate"] = "Unique Constraint Error";
+                ModelState.AddModelError("", "Error updating PCS. Make sure the ID is unique.");
                 return Page();
             }
 

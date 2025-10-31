@@ -72,6 +72,7 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
             }
             catch (DbUpdateException)
             {
+                ModelState.AddModelError(string.Empty, "Error saving Pcs. Verify modbus id is unique.");
                 return Page();
             }
 
