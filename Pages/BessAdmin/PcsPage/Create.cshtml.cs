@@ -13,9 +13,9 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
 {
     public class CreateModel : PageModel
     {
-        private readonly DotnetAPI.Data.YuzzContext _context;
+        private readonly YuzzContext _context;
 
-        public CreateModel(DotnetAPI.Data.YuzzContext context)
+        public CreateModel(YuzzContext context)
         {
             _context = context;
         }
@@ -47,6 +47,7 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
             }
             catch (DbUpdateException)
             {
+                ModelState.AddModelError(string.Empty, "Error saving Pcs. Verify modbus id is unique.");
                 return Page();
             }
 
