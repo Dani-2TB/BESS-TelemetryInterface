@@ -78,12 +78,12 @@ public class YuzzContext : DbContext
 
         // Autoincrement modbus_id
         modelBuilder.Entity<Pcs>()
-            .Property(p => p.ModbusId)
+            .Property(p => p.CanId)
             .ValueGeneratedOnAdd();
 
         // Agregar modbus_id editable
         modelBuilder.Entity<Pcs>()
-            .HasIndex(p => p.ModbusId)
+            .HasIndex(p => p.CanId)
             .IsUnique();
     }
 
