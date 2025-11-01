@@ -8,7 +8,6 @@ namespace DotnetAPI.Pages.BessAdmin;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-
     private readonly YuzzContext _context;
 
     public IndexModel(ILogger<IndexModel> logger, YuzzContext context)
@@ -36,4 +35,5 @@ public class IndexModel : PageModel
             .Where(p => p.Battery.BessId == Bess.Id)
             .CountAsync();
     }
+
 }
