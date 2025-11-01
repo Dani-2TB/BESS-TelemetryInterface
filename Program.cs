@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Data;
 using DotnetAPI.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using DotnetAPI.Models.Domain; // <-- Agrega esta línea
+using DotNetEnv;
+using DotNetEnv.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,4 +55,8 @@ void Configure()
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+
+    var configuration = new ConfigurationBuilder()
+        .AddDotNetEnv(".env", LoadOptions.TraversePath())
+        .Build();
 }
