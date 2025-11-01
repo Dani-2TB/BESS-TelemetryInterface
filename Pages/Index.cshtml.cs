@@ -6,12 +6,10 @@ namespace DotnetAPI.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private readonly IConfiguration _configuration;
 
-    public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
+    public IndexModel(ILogger<IndexModel> logger)
     {
         _logger = logger;
-        _configuration = configuration;
     }
 
     public void OnGet()
@@ -28,6 +26,7 @@ public class IndexModel : PageModel
             return dashboard.ToString();
         }
 
-        return "NO URL";
+        _logger.Log(LogLevel.Error, "There was no url in env.");
+        return "";
     }
 }
