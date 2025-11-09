@@ -10,9 +10,9 @@ public class Bess
     public int Id { get; set; }
     [Required, MaxLength(130)]
     public string Name { get; set; } = "noname";
-    [Required, DisplayName("AC Current Input Max (A)"), Range(0,sizeof(UInt32))]
+    [Required, DisplayName("AC Current Input Max (A)"), Range(0,4294967296)]
     public int CurrentMaxAcIn { get; set; }
-    [Required, DisplayName("AC Current Output Max (A)"), Range(0,sizeof(UInt32))]
+    [Required, DisplayName("AC Current Output Max (A)"), Range(0,4294967296)]
     public int CurrentMaxAcOut { get; set; }
 
     [Required, DisplayName("Threshold Current")]
