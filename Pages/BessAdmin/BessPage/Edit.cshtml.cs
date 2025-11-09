@@ -11,9 +11,12 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
     {
         private readonly YuzzContext _context;
 
-        public EditModel(YuzzContext context)
+        private readonly ILogger<EditModel> _logger;
+
+        public EditModel(YuzzContext context, ILogger<EditModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -50,6 +53,18 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
             if (!ModelState.IsValid)
             {
                 ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
+                foreach (var entry in ModelState)
+{
+    var key = entry.Key;
+    foreach (var error in entry.Value.Errors)
+    {
+        _logger.LogError("ModelState error on '{Field}': {Error}",
+            key,
+            string.IsNullOrWhiteSpace(error.ErrorMessage)
+                ? error.Exception?.Message
+                : error.ErrorMessage);
+    }
+}
                 return Page();
             }
 
