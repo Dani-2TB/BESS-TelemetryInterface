@@ -10,10 +10,12 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
     public class CreateModel : PageModel
     {
         private readonly YuzzContext _context;
+        private readonly ILogger<CreateModel> _logger;
 
-        public CreateModel(YuzzContext context)
+        public CreateModel(YuzzContext context, ILogger<CreateModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
@@ -32,6 +34,18 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("Error");
+                foreach (var entry in ModelState)
+                {
+                    var key = entry.Key;
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        _logger.LogError("ModelState error on '{Field}': {Error}",
+                            key,
+                            string.IsNullOrWhiteSpace(error.ErrorMessage)
+                                ? error.Exception?.Message
+                                : error.ErrorMessage);
+                    }
+                }
                 return Page();
             }
 
@@ -44,9 +58,19 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             Battery.VoltageAbsorption *= 1000;
 
             Battery.PwrMax *= 1000;
-            
+
+            Battery.SocMax *= 10;
+            Battery.SocMin *= 10;
+
+            if (Battery.SocMax < Battery.SocMin)
+            {
+                ModelState.AddModelError("", "Soc values ranges don't make sense");
+                return Page();
+            }
+
             try
             {
+
                 _context.Batteries.Add(Battery);
                 await _context.SaveChangesAsync();
 
@@ -54,9 +78,8 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             {
                 ModelState.AddModelError("", "Error updating PCS. Make sure the ID is unique.");
                 return Page();
-            }
-
-
+            } 
+            
 
             return RedirectToPage("./Index");
         }

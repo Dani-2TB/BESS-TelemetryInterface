@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using DotnetAPI.Data;
 using DotnetAPI.Models;
 using DotnetAPI.Services;
@@ -6,7 +7,6 @@ using DotnetAPI.Models.Domain;
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -99,15 +99,33 @@ void Configure()
 
     // Servicios necesarios
     builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
+
+    // Identity Configuration
+    builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 4;
+    })
+    .AddEntityFrameworkStores<YuzzContext>()
+    .AddDefaultTokenProviders();
+
+    // Cookie Configuration
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/Auth/Index";
+        options.AccessDeniedPath = "/Error";
+    });
+
     builder.Services.AddAuthorization();
 
-    // Proteger páginas (requieren autenticación JWT)
     builder.Services.AddRazorPages(options =>
     {
-        options.Conventions.AuthorizeFolder("/BessAdmin"); // Protege admin
-        options.Conventions.AllowAnonymousToPage("/Auth/Index"); // Login sin auth
-        options.Conventions.AllowAnonymousToPage("/Index"); // Home sin auth
+        options.Conventions.AuthorizeFolder("/BessAdmin");
     });
+    builder.Services.AddHttpClient(); 
 
     builder.Services.AddHttpClient();
     builder.Services.AddEndpointsApiExplorer();

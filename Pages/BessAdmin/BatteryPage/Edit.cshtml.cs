@@ -46,6 +46,8 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
 
             battery.PwrMax /= 1000;
 
+            battery.SocMax /= 10;
+            battery.SocMin /= 10;
 
             Battery = battery;
             ViewData["BessId"] = new SelectList(_context.Besses, "Id", "Name");
@@ -71,8 +73,17 @@ namespace DotnetAPI.Pages.BessAdmin.BatteryPage
             Battery.VoltageAbsorption *= 1000;
 
             Battery.PwrMax *= 1000;
+
+            Battery.SocMax *= 10;
+            Battery.SocMin *= 10;
             
             _context.Attach(Battery).State = EntityState.Modified;
+
+            if (Battery.SocMax < Battery.SocMin)
+            {
+                ModelState.AddModelError("", "Soc values ranges don't make sense");
+                return Page();
+            }
 
             try
             {

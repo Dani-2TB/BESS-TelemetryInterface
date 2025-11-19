@@ -13,7 +13,9 @@
   <div class="col-8 mx-auto">
     <form method="post" class="row border border-2 rounded px-4 py-4">
       <h3>Edit Battery</h3>
-      <input type="hidden" asp-for="Battery.Id">
+
+      <div asp-validation-summary="ModelOnly" class="text-yuzz-purple mb-3"></div>
+      <input asp-for="Battery.Id" type="hidden">
       <div class="col-3">
         <span class="text-danger">*</span>
         <label asp-for="Battery.ModbusId" class="form-label"></label>
@@ -27,12 +29,14 @@
       <div class="col-6">
         <span class="text-danger">*</span>
         <label asp-for="Battery.SocMax" class="form-label"></label>
-        <input asp-for="Battery.SocMax" type="number" class="form-control">
+        <input asp-for="Battery.SocMax" type="range" class="form-range" max="100" min="0" step="1" id="SocMax">
+        <output for="SocMax" id="SocMaxValue" aria-hidden="true" class="text-white"></output>
       </div>
       <div class="col-6">
         <span class="text-danger">*</span>
         <label asp-for="Battery.SocMin" class="form-label"></label>
-        <input asp-for="Battery.SocMin" type="number" class="form-control">
+        <input asp-for="Battery.SocMin" type="range" class="form-range" max="100" min="0" step="1" id="SocMin">
+        <output for="SocMin" id="SocMinValue" aria-hidden="true" class="text-white"></output>
       </div>
       <div class="col-4">
         <span class="text-danger">*</span>
@@ -75,3 +79,20 @@
     </form>
   </div>
 </div>
+
+<script>
+  const rangeInput1 = document.getElementById('SocMax');
+  const rangeOutput1 = document.getElementById('SocMaxValue');
+  const rangeInput2 = document.getElementById('SocMin');
+  const rangeOutput2 = document.getElementById('SocMinValue');
+
+  rangeOutput1.textContent = rangeInput1.value;
+  rangeOutput2.textContent = rangeInput2.value;
+
+  rangeInput1.addEventListener('input', function() {
+    rangeOutput1.textContent = this.value;
+  });
+  rangeInput2.addEventListener('input', function() {
+    rangeOutput2.textContent = this.value;
+  });
+</script>

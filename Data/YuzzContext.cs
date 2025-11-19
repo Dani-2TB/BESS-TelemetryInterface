@@ -2,10 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using DotnetAPI.Models.Domain;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DotnetAPI.Data;
 
-public class YuzzContext : DbContext
+public class YuzzContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public YuzzContext(DbContextOptions<YuzzContext> options) : base(options) { }
 
@@ -15,8 +17,11 @@ public class YuzzContext : DbContext
     public DbSet<PcsModel> PcsModels {get; set;}
     public DbSet<Pcs> Pcs { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
+<<<<<<< HEAD
      public DbSet<AppUser> Users { get; set; }
     
+=======
+>>>>>>> 325a4b1 (feat: added identity auth, fix: soc validation)
     
     /* OnModelCreating Override
     * This function overrides Entity Framework's function when creating models
@@ -27,18 +32,16 @@ public class YuzzContext : DbContext
     */
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Configure Identity related tables
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<AuditLog>()
             .Property(b => b.Timestamp)
             .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
+        // Add Rut unique field for AppUser
         modelBuilder.Entity<AppUser>()
-            .HasIndex(u => u.UserName)
-            .IsUnique();
-
-        modelBuilder.Entity<AppUser>()
-            .HasIndex(u => u.Email)
+            .HasIndex(u => u.Rut)
             .IsUnique();
 
         // Add Bess -> OperationMode Foreign Key
@@ -83,12 +86,12 @@ public class YuzzContext : DbContext
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("PCS_MODEL");
 
-        // Autoincrement modbus_id
+        // Autoincrement can_id
         modelBuilder.Entity<Pcs>()
             .Property(p => p.CanId)
             .ValueGeneratedOnAdd();
 
-        // Agregar modbus_id editable
+        // Add editable can_id
         modelBuilder.Entity<Pcs>()
             .HasIndex(p => p.CanId)
             .IsUnique();
@@ -191,4 +194,3 @@ public class YuzzContext : DbContext
         return null; 
     }
 }
-

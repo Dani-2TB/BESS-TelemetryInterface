@@ -156,3 +156,7 @@ body {
 .form-text {
     color: rgb(255, 128, 25);
 }
+
+.form-range {
+    accent-color: #DF5500 !important;
+}
