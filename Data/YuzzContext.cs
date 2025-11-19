@@ -60,11 +60,6 @@ public class YuzzContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("BESS_BATTERY");
         
-        // Autoincrement modbus_id
-        modelBuilder.Entity<Battery>()
-            .Property(b => b.ModbusId)
-            .ValueGeneratedOnAdd();
-
         // Add modbus_id unique field
         modelBuilder.Entity<Battery>()
             .HasIndex(b => b.ModbusId)
@@ -85,11 +80,6 @@ public class YuzzContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             .HasForeignKey(p => p.PcsModelId)
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("PCS_MODEL");
-
-        // Autoincrement can_id
-        modelBuilder.Entity<Pcs>()
-            .Property(p => p.CanId)
-            .ValueGeneratedOnAdd();
 
         // Add editable can_id
         modelBuilder.Entity<Pcs>()
