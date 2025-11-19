@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using DotnetAPI.Data;
-using DotnetAPI.Models;
+using DotnetAPI.Models.Domain;
 using DotNetEnv;
 using DotNetEnv.Configuration;
+using DotnetAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,9 +50,31 @@ void Configure()
     builder.Services.AddDbContext<YuzzContext>(opt =>
         opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+    // Identity Configuration
+    builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 4;
+    })
+    .AddEntityFrameworkStores<YuzzContext>()
+    .AddDefaultTokenProviders();
+
+    // Cookie Configuration
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/Auth/Index";
+        options.AccessDeniedPath = "/Error";
+    });
+
     builder.Services.AddAuthorization();
 
-    builder.Services.AddRazorPages();
+    builder.Services.AddRazorPages(options =>
+    {
+        options.Conventions.AuthorizeFolder("/BessAdmin");
+    });
     builder.Services.AddHttpClient(); 
 
     builder.Services.AddEndpointsApiExplorer();
