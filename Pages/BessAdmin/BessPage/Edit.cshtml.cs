@@ -37,6 +37,7 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
             }
             bess.CurrentMaxAcOut /= 1000;
             bess.CurrentMaxAcIn /= 1000;
+            bess.ThresholdCurrent /= 1000;
 
             Bess = bess;
             ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
@@ -49,6 +50,7 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
         {
             Bess.CurrentMaxAcIn *= 1000;
             Bess.CurrentMaxAcOut *= 1000;
+            Bess.ThresholdCurrent *= 1000;
 
             if (!ModelState.IsValid)
             {
