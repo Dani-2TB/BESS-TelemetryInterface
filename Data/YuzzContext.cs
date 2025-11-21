@@ -15,7 +15,7 @@ public class YuzzContext : DbContext
     public DbSet<PcsModel> PcsModels {get; set;}
     public DbSet<Pcs> Pcs { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
-    // public DbSet<AppUser> Users { get; set; }
+     public DbSet<AppUser> Users { get; set; }
     
     
     /* OnModelCreating Override
