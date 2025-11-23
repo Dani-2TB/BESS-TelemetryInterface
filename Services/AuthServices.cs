@@ -14,7 +14,8 @@ public static class AuthEndpoints
     {
         var group = routes.MapGroup("/api/auth"); // Grouping for better API structure
 
-        group.MapPost("/register", Register);
+        group.MapPost("/register", Register)
+             .RequireAuthorization(p => p.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
         group.MapPost("/login", Login);
         
         // Explicitly require JWT Scheme for this endpoint to avoid confusion with Cookies

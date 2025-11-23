@@ -27,7 +27,7 @@ using (var scope = app.Services.CreateScope())
         // Auto-migrate on startup to ensure DB schema matches code in the device
         var context = services.GetRequiredService<YuzzContext>();
         context.Database.Migrate();
-        // Activar journal mode WAL para mejorar concurrencia
+        // Activate journal mode WAL for better concurrency 
         context.Database.ExecuteSqlRaw("PRAGMA journal_mode=WAL;");
         await SeedData.InitializeAsync(services);
     }
