@@ -23,7 +23,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    try 
+    try
     {
         // Auto-migrate on startup to ensure DB schema matches code in the device
         var context = services.GetRequiredService<YuzzContext>();
@@ -42,7 +42,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     // Enforce strict HTTPS in production/staging
-    app.UseHsts(); 
+    app.UseHsts();
 }
 
 // Enable Swagger in all environments for local device debugging
@@ -58,7 +58,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
-//app.MapAuthEndpoints();
+app.MapAuthEndpoints();
 app.MapConfigEndpoints();
 
 app.Run();
@@ -69,10 +69,10 @@ void ConfigureServices(WebApplicationBuilder builder)
         opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     // Identity handles Cookie auth by default for Razor Pages
-    builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
+    builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
     {
-        options.Password.RequireDigit = true; 
-        options.Password.RequiredLength = 8; 
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
         options.SignIn.RequireConfirmedAccount = false;
     })
     .AddEntityFrameworkStores<YuzzContext>()
@@ -87,11 +87,11 @@ void ConfigureServices(WebApplicationBuilder builder)
         options.Cookie.SameSite = SameSiteMode.Strict; // CSRF mitigation
         options.Events.OnRedirectToLogin = context =>
         {
-                if (context.Request.Path.StartsWithSegments("/api"))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    return Task.CompletedTask;
-                }
+            if (context.Request.Path.StartsWithSegments("/api"))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            }
             context.Response.Redirect(context.RedirectUri);
             return Task.CompletedTask;
         };
@@ -118,14 +118,23 @@ void ConfigureServices(WebApplicationBuilder builder)
         });
 
     builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
-    
+
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("ApiAuth", policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+    });
+
     builder.Services.AddRazorPages(options =>
     {
         options.Conventions.AuthorizeFolder("/BessAdmin");
     });
-    
+
     // Required for API endpoints
-    builder.Services.AddControllers(); 
+    builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddHttpClient();
 

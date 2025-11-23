@@ -14,40 +14,14 @@ public static class AuthEndpoints
     {
         var group = routes.MapGroup("/api/auth"); // Grouping for better API structure
 
-        group.MapPost("/register", Register)
-             .RequireAuthorization(p => p.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
         group.MapPost("/login", Login);
         
-        // Explicitly require JWT Scheme for this endpoint to avoid confusion with Cookies
-        group.MapGet("/me", GetCurrentUser)
-             .RequireAuthorization(p => p.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+        group.MapGet("/me", GetCurrentUser).RequireAuthorization("ApiAuth");
 
         return routes;
     }
 
-    private static async Task<IResult> Register(
-        RegisterRequest req, 
-        UserManager<AppUser> userManager)
-    {
-        if (string.IsNullOrWhiteSpace(req.UserName) || string.IsNullOrWhiteSpace(req.Email))
-            return Results.BadRequest(new { message = "Invalid input data." });
-
-        var user = new AppUser
-        {
-            UserName = req.UserName,
-            Email = req.Email,
-        };
-
-        // UserManager handles hashing, salting, and validation automatically
-        var result = await userManager.CreateAsync(user, req.Password);
-
-        if (!result.Succeeded)
-        {
-            return Results.BadRequest(result.Errors);
-        }
-
-        return Results.Created($"/users/{user.Id}", new { message = "User registered successfully." });
-    }
+   
 
     private static async Task<IResult> Login(
         LoginRequest req, 
@@ -83,7 +57,7 @@ public static class AuthEndpoints
         UserManager<AppUser> userManager)
     {
         // Extract ID from the 'sub' claim standard
-        var userId = principal.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId is null) return Results.Unauthorized();
 
         var user = await userManager.FindByIdAsync(userId);
@@ -95,7 +69,8 @@ public static class AuthEndpoints
     private static string GenerateJwt(AppUser user, IConfiguration config)
     {
         var jwtSettings = config.GetSection("Jwt");
-        var key = Encoding.UTF8.GetBytes(config["JWT_TOKEN"] 
+        var JWT_TOKEN = config["JWT_TOKEN"];
+        var key = Encoding.UTF8.GetBytes(JWT_TOKEN 
             ?? throw new InvalidOperationException("JWT Key missing"));
 
         var claims = new List<Claim>

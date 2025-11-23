@@ -15,7 +15,8 @@ public static class ConfigApiEndpoints
 
     private static void MapBatteryEndpoints(WebApplication app)
     {
-        var batteryGroup = app.MapGroup("/api/batteries");
+        var batteryGroup = app.MapGroup("/api/batteries").RequireAuthorization("ApiAuth");
+
 
         // GET: all
         batteryGroup.MapGet("/", async (YuzzContext db) =>
@@ -89,7 +90,7 @@ public static class ConfigApiEndpoints
 
     private static void MapPcsEndpoints(WebApplication app)
     {
-        var pcsGroup = app.MapGroup("/api/pcs");
+        var pcsGroup = app.MapGroup("/api/pcs").RequireAuthorization("ApiAuth");
 
         // GET: all PCS
         pcsGroup.MapGet("/", async (YuzzContext db) =>
@@ -163,7 +164,7 @@ public static class ConfigApiEndpoints
 
     private static void MapBessEndpoints(WebApplication app)
     {
-        var bessGroup = app.MapGroup("/api/bess");
+        var bessGroup = app.MapGroup("/api/bess").RequireAuthorization("ApiAuth");
 
         // GET: all BESS
         bessGroup.MapGet("/", async (YuzzContext db) =>
