@@ -1,7 +1,6 @@
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 
 namespace DotnetAPI.Models;
@@ -27,7 +26,7 @@ public static class SeedData
 
         // Seed Admin User
         var adminEmail = Env.GetString("YUZZ_EMAIL");
-        if (string.IsNullOrEmpty(adminEmail)) return; // Fail silent or throw based on preference
+        if (string.IsNullOrEmpty(adminEmail)) throw new Exception("YUZZ_EMAIL missing"); 
 
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -55,6 +54,10 @@ public static class SeedData
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(newAdmin, "Admin");
+            } else
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new Exception($"❌ Failed to create Admin User: {errors}");
             }
         }
 
