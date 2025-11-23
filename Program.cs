@@ -27,7 +27,7 @@ using (var scope = app.Services.CreateScope())
         // Auto-migrate on startup to ensure DB schema matches code in the device
         var context = services.GetRequiredService<YuzzContext>();
         context.Database.Migrate();
-        SeedData.Initialize(services);
+        await SeedData.InitializeAsync(services);
     }
     catch (Exception ex)
     {

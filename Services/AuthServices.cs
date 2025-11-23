@@ -53,7 +53,7 @@ public static class AuthEndpoints
         UserManager<AppUser> userManager, 
         IConfiguration config)
     {
-        // 1. Find User (Supports UserName or Email)
+        // Find User (Supports UserName or Email)
         var user = await userManager.FindByNameAsync(req.UserNameOrEmail);
         if (user == null && req.UserNameOrEmail.Contains("@"))
         {
@@ -62,17 +62,17 @@ public static class AuthEndpoints
 
         if (user is null) return Results.Unauthorized();
 
-        // 2. Check Password using UserManager
+        // Check Password using UserManager
         // This implicitly checks the 'Lockout' status if enabled in options
         var isValid = await userManager.CheckPasswordAsync(user, req.Password);
         
         if (!isValid) 
         {
-            // Optional: Increment access failed count here using userManager.AccessFailedAsync(user)
+            // Increment access failed count here using userManager.AccessFailedAsync(user)
             return Results.Unauthorized();
         }
 
-        // 3. Generate Token
+        // Generate Token
         var token = GenerateJwt(user, config);
         return Results.Ok(new { token });
     }
