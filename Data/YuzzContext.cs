@@ -17,11 +17,6 @@ public class YuzzContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     public DbSet<PcsModel> PcsModels {get; set;}
     public DbSet<Pcs> Pcs { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
-<<<<<<< HEAD
-     public DbSet<AppUser> Users { get; set; }
-    
-=======
->>>>>>> 325a4b1 (feat: added identity auth, fix: soc validation)
     
     /* OnModelCreating Override
     * This function overrides Entity Framework's function when creating models

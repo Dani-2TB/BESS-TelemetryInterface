@@ -26,7 +26,11 @@ public static class SeedData
         }
 
         // 2. Seed Admin User
-        var adminEmail = DotNetEnv.Env.GetString("YUZZ_EMAIL"); 
+        var adminEmail = DotNetEnv.Env.GetString("YUZZ_EMAIL");
+
+        if (string.IsNullOrEmpty(adminEmail)) 
+            throw new Exception("YUZZ_EMAIL is missing in .env file");
+
         var adminUser = userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
 
         if (adminUser == null)
@@ -42,11 +46,6 @@ public static class SeedData
             if (string.IsNullOrEmpty(adminUsername))
             {
                 throw new Exception("YUZZ_USERNAME is missing in .env file");
-            }
-
-            if (string.IsNullOrEmpty(adminEmail))
-            {
-                throw new Exception("YUZZ_EMAIL is missing in .env file");
             }
 
             var (rut, dv) = GenerateValidRut(11111111); // Get DV from rut "11.111.111"
