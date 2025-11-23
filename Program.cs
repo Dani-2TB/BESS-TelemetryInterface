@@ -1,137 +1,139 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using DotnetAPI.Data;
-using DotnetAPI.Models;
-using DotnetAPI.Services;
 using DotnetAPI.Models.Domain;
+using DotnetAPI.Models;
 using DotNetEnv;
-using DotNetEnv.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Configure();
+// Load env vars immediately to ensure DB connection string is available
+Env.Load(".env");
+builder.Configuration.AddEnvironmentVariables();
+
+ConfigureServices(builder);
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
+    try 
+    {
+        // Auto-migrate on startup to ensure DB schema matches code in the device
+        var context = services.GetRequiredService<YuzzContext>();
+        context.Database.Migrate();
+        SeedData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        services.GetRequiredService<ILogger<Program>>().LogError(ex, "DB Seeding/Migration failed.");
+    }
 }
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    app.UseHsts();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Enforce strict HTTPS in production/staging
+    app.UseHsts(); 
 }
 
-// CORS para permitir acceso desde internet
-app.UseCors("AllowAll");
+// Enable Swagger in all environments for local device debugging
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapAuthEndpoints(); // Activar los endpoints JWT
-
-app.MapStaticAssets();
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
 
-void Configure()
+void ConfigureServices(WebApplicationBuilder builder)
 {
-    // Database Configuration
     builder.Services.AddDbContext<YuzzContext>(opt =>
         opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    // CORS Configuration para acceso desde internet
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAll", builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
-    });
-
-    // Configuración de JWT - Lee desde User Secrets
-    var jwtKey = builder.Configuration["JWT_TOKEN"] ?? throw new InvalidOperationException("JWT_TOKEN not found in configuration");
-    var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "YuzzAPI";
-    var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "YuzzClient";
-
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.Events = new JwtBearerEvents
-            {
-                OnMessageReceived = context =>
-                {
-                    // Para Razor Pages: Lee token desde cookie SI existe
-                    var token = context.Request.Cookies["jwtToken"];
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        context.Token = token;
-                    }
-                    return Task.CompletedTask;
-                }
-            };
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = jwtIssuer,
-                ValidateAudience = true,
-                ValidAudience = jwtAudience,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.FromSeconds(30)
-            };
-        });
-
-    // Servicios necesarios
-    builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
-
-    // Identity Configuration
+    // Identity handles Cookie auth by default for Razor Pages
     builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options => 
     {
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequiredLength = 4;
+        options.Password.RequireDigit = true; 
+        options.Password.RequiredLength = 8; 
+        options.SignIn.RequireConfirmedAccount = false;
     })
     .AddEntityFrameworkStores<YuzzContext>()
     .AddDefaultTokenProviders();
 
-    // Cookie Configuration
+    // Security hardening for session cookies
     builder.Services.ConfigureApplicationCookie(options =>
     {
         options.LoginPath = "/Auth/Index";
         options.AccessDeniedPath = "/Error";
+        options.Cookie.HttpOnly = true; // Prevent XSS stealing
+        options.Cookie.SameSite = SameSiteMode.Strict; // CSRF mitigation
     });
 
-    builder.Services.AddAuthorization();
+    // JWT setup as a specific scheme. API Controllers must explicitly ask for this scheme
+    // using [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    var jwtKey = builder.Configuration["JWT_TOKEN"] ?? throw new InvalidOperationException("JWT_TOKEN missing");
 
+    builder.Services.AddAuthentication()
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "YuzzAPI",
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["Jwt:Audience"] ?? "YuzzClient",
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero // Strict expiration
+            };
+        });
+
+    builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
+    
     builder.Services.AddRazorPages(options =>
     {
         options.Conventions.AuthorizeFolder("/BessAdmin");
     });
-    builder.Services.AddHttpClient(); 
-
-    builder.Services.AddHttpClient();
+    
+    // Required for API endpoints
+    builder.Services.AddControllers(); 
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddHttpClient();
 
-    var configuration = new ConfigurationBuilder()
-        .AddDotNetEnv(".env", LoadOptions.TraversePath())
-        .Build();
+    // Configure Swagger to allow Bearer token testing in UI
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Yuzz BESS API", Version = "v1" });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                },
+                Array.Empty<string>()
+            }
+        });
+    });
 }
