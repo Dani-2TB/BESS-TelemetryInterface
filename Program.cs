@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using DotnetAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+//app.MapAuthEndpoints();
+app.MapConfigEndpoints();
 
 app.Run();
 
@@ -82,6 +85,16 @@ void ConfigureServices(WebApplicationBuilder builder)
         options.AccessDeniedPath = "/Error";
         options.Cookie.HttpOnly = true; // Prevent XSS stealing
         options.Cookie.SameSite = SameSiteMode.Strict; // CSRF mitigation
+        options.Events.OnRedirectToLogin = context =>
+        {
+                if (context.Request.Path.StartsWithSegments("/api"))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                }
+            context.Response.Redirect(context.RedirectUri);
+            return Task.CompletedTask;
+        };
     });
 
     // JWT setup as a specific scheme. API Controllers must explicitly ask for this scheme
