@@ -1,41 +1,161 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using DotnetAPI.Data;
+using DotnetAPI.Models.Domain;
+using DotnetAPI.Models;
+using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using DotnetAPI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+Env.Load(".env");
+builder.Configuration.AddEnvironmentVariables();
+
+ConfigureServices(builder);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.MapOpenApi();
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Auto-migrate on startup to ensure DB schema matches code in the device
+        var context = services.GetRequiredService<YuzzContext>();
+        context.Database.Migrate();
+        // Activate journal mode WAL for better concurrency 
+        context.Database.ExecuteSqlRaw("PRAGMA journal_mode=WAL;");
+        await SeedData.InitializeAsync(services);
+    }
+    catch (Exception ex)
+    {
+        services.GetRequiredService<ILogger<Program>>().LogError(ex, "DB Seeding/Migration failed.");
+    }
 }
 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // Enforce strict HTTPS in production/staging
+    app.UseHsts();
+}
+
+// Enable Swagger in all environments for local device debugging
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapRazorPages();
+app.MapControllers();
+app.MapAuthEndpoints();
+app.MapConfigEndpoints();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+void ConfigureServices(WebApplicationBuilder builder)
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    builder.Services.AddDbContext<YuzzContext>(opt =>
+        opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    // Identity handles Cookie auth by default for Razor Pages
+    builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddEntityFrameworkStores<YuzzContext>()
+    .AddDefaultTokenProviders();
+
+    // Security hardening for session cookies
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/Auth/Index";
+        options.AccessDeniedPath = "/Error";
+        options.Cookie.HttpOnly = true; // Prevent XSS stealing
+        options.Cookie.SameSite = SameSiteMode.Strict; // CSRF mitigation
+        options.Events.OnRedirectToLogin = context =>
+        {
+            if (context.Request.Path.StartsWithSegments("/api"))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            }
+            context.Response.Redirect(context.RedirectUri);
+            return Task.CompletedTask;
+        };
+    });
+
+    // JWT setup as a specific scheme. API Controllers must explicitly ask for this scheme
+    // using [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    var jwtKey = builder.Configuration["JWT_TOKEN"] ?? throw new InvalidOperationException("JWT_TOKEN missing");
+
+    builder.Services.AddAuthentication()
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "YuzzAPI",
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["Jwt:Audience"] ?? "YuzzClient",
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero // Strict expiration
+            };
+        });
+
+    builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
+
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("ApiAuth", policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+    });
+
+    builder.Services.AddRazorPages(options =>
+    {
+        options.Conventions.AuthorizeFolder("/BessAdmin");
+    });
+
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddHttpClient();
+
+    // Configure Swagger to allow Bearer token testing in UI
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Yuzz BESS API", Version = "v1" });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                },
+                Array.Empty<string>()
+            }
+        });
+    });
 }

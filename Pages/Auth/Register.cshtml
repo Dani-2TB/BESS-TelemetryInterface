@@ -1,0 +1,84 @@
+@page
+@model DotnetAPI.Pages.Auth.RegisterModel
+@{
+  ViewData["Title"] = "Register";
+}
+
+<div class="row mt-4">
+  <div class="col-8 mx-auto">
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+      class="row border border-2 rounded px-4 py-4">
+      <h3 class="mb-3 text-center">Create a new account</h3>
+
+      <div asp-validation-summary="ModelOnly" class="text-yuzz-purple mb-3"></div>
+
+      <h5 class="text-white mt-2 mb-3">Personal Information</h5>
+
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.NombreCompleto" class="form-label"></label>
+        <input asp-for="Input.NombreCompleto" class="form-control" aria-required="true" />
+        <span asp-validation-for="Input.NombreCompleto" class="text-yuzz-purple"></span>
+      </div>
+
+      <div class="col-9">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.Rut" class="form-label">RUT (Sin puntos)</label>
+        <input asp-for="Input.Rut" type="number" class="form-control" aria-required="true" placeholder="12345678" />
+        <span asp-validation-for="Input.Rut" class="text-yuzz-purple"></span>
+      </div>
+      <div class="col-3">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.Dv" class="form-label">DV</label>
+        <input asp-for="Input.Dv" class="form-control" aria-required="true" placeholder="K" />
+        <span asp-validation-for="Input.Dv" class="text-yuzz-purple"></span>
+      </div>
+
+      <div class="col-12">
+        <label asp-for="Input.Cargo" class="form-label"></label>
+        <input asp-for="Input.Cargo" class="form-control" />
+        <span asp-validation-for="Input.Cargo" class="text-yuzz-purple"></span>
+      </div>
+
+      <h5 class="text-white mt-4 mb-3">Account Credentials</h5>
+
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.Email" class="form-label"></label>
+        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+        <span asp-validation-for="Input.Email" class="text-yuzz-purple"></span>
+      </div>
+
+      <div class="col-6">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.Password" class="form-label"></label>
+        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+        <span asp-validation-for="Input.Password" class="text-yuzz-purple"></span>
+      </div>
+      <div class="col-6">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+        <span asp-validation-for="Input.ConfirmPassword" class="text-yuzz-purple"></span>
+      </div>
+
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Input.Role" class="form-label">Assign Role</label>
+        <select asp-for="Input.Role" asp-items="Model.RoleOptions" class="form-control">
+          <option value="">-- Select Role --</option>
+        </select>
+        <span asp-validation-for="Input.Role" class="text-yuzz-purple"></span>
+      </div>
+
+      <div class="col-12 mt-4">
+        <button id="registerSubmit" type="submit" class="btn btn-primary w-100">Register</button>
+      </div>
+      <div class="col-12 mt-3 text-center">
+        <p>
+          <a asp-page="./Index" class="text-decoration-none text-white">Back to Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

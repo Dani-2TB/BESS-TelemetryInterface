@@ -1,0 +1,39 @@
+@page
+@model DotnetAPI.Pages.BessAdmin.OperationModePage.IndexModel
+
+@{
+    ViewData["Title"] = "Operation Modes";
+}
+
+<h1>Operation Modes</h1>
+
+<p>
+    <a class="btn btn-success" asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Operation Modes List
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OperationMode) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-page="/Admin/index" class="btn btn-dark">
+    Admin Dashboard
+</a>

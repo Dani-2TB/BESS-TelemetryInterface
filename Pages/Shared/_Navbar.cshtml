@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Identity
+@using DotnetAPI.Models.Domain
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<nav class="navbar navbar-expand-lg border-bottom">
+  <div class="container">
+    <a class="navbar-brand" asp-area="" asp-page="/Index">
+      <img src="~/images/logo.png" alt="Yuzz" class="img-fluid" style="max-height: 50px">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse">
+      @if (SignInManager.IsSignedIn(User))
+      {
+        <p class="d-inline fs-5 my-auto ms-3">Hello @User.Identity?.Name!</p>
+      }
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item">
+          <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" asp-area="" asp-page="/BessAdmin/Index">Administration</a>
+        </li>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item">
+                <form class="d-flex" asp-page="/Auth/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post">
+                    <button type="submit" class="nav-link bg-transparent border-0">Logout</button>
+                </form>
+            </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,39 @@
+@page
+@model DotnetAPI.Pages.BessAdmin.PcsPage.CreateModel
+
+@{
+  ViewData["Title"] = "Create";
+}
+
+<div class="d-flex gap-4 justify-content-center">
+  <a asp-page="./Index" class="btn btn-list">Back to List</a>
+</div>
+<hr />
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <form method="post" class="row border border-2 rounded p-4">
+      <h3>Edit Pcs</h3>
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Pcs.CanId" class="form-label"></label>
+        <input asp-for="Pcs.CanId" type="number" class="form-control">
+      </div>
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Pcs.BatteryId" class="form-label"></label>
+        <select asp-for="Pcs.BatteryId" class="form-control" asp-items="ViewBag.BatteryId"></select>
+        <span asp-validation-for="Pcs.BatteryId" class="text-danger"></span>
+      </div>
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Pcs.PcsModelId" class="form-label"></label>
+        <select asp-for="Pcs.PcsModelId" class="form-control" asp-items="ViewBag.PcsModelId"></select>
+        <span asp-validation-for="Pcs.PcsModelId" class="text-danger"></span>
+      </div>
+      <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary w-100">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

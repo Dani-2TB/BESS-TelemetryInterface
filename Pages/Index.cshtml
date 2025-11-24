@@ -1,0 +1,13 @@
+﻿@page
+@using DotnetAPI.Pages
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_MonitorLayout";
+}
+
+<iframe 
+src="@ViewData["GrafanaIframeUrl"]" 
+width="100%"
+height="100%"
+></iframe>

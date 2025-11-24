@@ -1,0 +1,25 @@
+@page
+@model DotnetAPI.Pages.BessAdmin.BessPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Bess List</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+
+<div class="row">
+@foreach (var item in Model.Bess) {
+<div class="col">
+</div>
+}
+</div>
+
+</table>
+<a asp-page="/Admin/Index" class="btn btn-dark">
+    Admin Dashboard
+</a>

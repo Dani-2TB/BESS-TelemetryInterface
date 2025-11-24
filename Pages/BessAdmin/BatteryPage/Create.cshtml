@@ -1,0 +1,98 @@
+@page
+@model DotnetAPI.Pages.BessAdmin.BatteryPage.CreateModel
+
+@{
+  ViewData["Title"] = "Create";
+}
+
+<div class="d-flex justify-content-center">
+  <a asp-page="./Index" class="btn btn-list">Back to List</a>
+</div>
+<hr/>
+<div class="row">
+  <div class="col-8 mx-auto">
+    <form method="post" class="row border border-2 rounded px-4 py-4">
+      <h3>Edit Battery</h3>
+
+      <div asp-validation-summary="ModelOnly" class="text-yuzz-purple mb-3"></div>
+      
+      <div class="col-3">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.ModbusId" class="form-label"></label>
+        <input asp-for="Battery.ModbusId" type="number" class="form-control" required>
+      </div>
+      <div class="col-9">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.Name" class="form-label"></label>
+        <input asp-for="Battery.Name" type="text" class="form-control">
+      </div>
+      <div class="col-6">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.SocMax" class="form-label"></label>
+        <input asp-for="Battery.SocMax" type="range" class="form-range" max="100" min="0" step="1" id="SocMax">
+        <output for="SocMax" id="SocMaxValue" aria-hidden="true" class="text-white"></output>
+      </div>
+      <div class="col-6">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.SocMin" class="form-label"></label>
+        <input asp-for="Battery.SocMin" type="range" class="form-range" max="100" min="0" step="1" id="SocMin">
+        <output for="SocMin" id="SocMinValue" aria-hidden="true" class="text-white"></output>
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.CurrentMax" class="form-label"></label>
+        <input asp-for="Battery.CurrentMax" type="number" class="form-control">
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.VoltageMax" class="form-label"></label>
+        <input asp-for="Battery.VoltageMax" type="number" class="form-control">
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.VoltageMin" class="form-label"></label>
+        <input asp-for="Battery.VoltageMin" type="number" class="form-control">
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.VoltageAbsorption" class="form-label"></label>
+        <input asp-for="Battery.VoltageAbsorption" type="number" class="form-control">
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.CurrentCharging" class="form-label"></label>
+        <input asp-for="Battery.CurrentCharging" type="number" class="form-control">
+      </div>
+      <div class="col-4">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.PwrMax" class="form-label"></label>
+        <input asp-for="Battery.PwrMax" type="number" class="form-control">
+      </div>
+      <div class="col-12">
+        <span class="text-danger">*</span>
+        <label asp-for="Battery.BessId" class="form-label"></label>
+        <select asp-for="Battery.BessId" class ="form-control" asp-items="ViewBag.BessId"></select>
+      </div>
+      <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary w-100">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const rangeInput1 = document.getElementById('SocMax');
+  const rangeOutput1 = document.getElementById('SocMaxValue');
+  const rangeInput2 = document.getElementById('SocMin');
+  const rangeOutput2 = document.getElementById('SocMinValue');
+
+  rangeOutput1.textContent = rangeInput1.value;
+  rangeOutput2.textContent = rangeInput2.value;
+
+  rangeInput1.addEventListener('input', function() {
+    rangeOutput1.textContent = this.value;
+  });
+  rangeInput2.addEventListener('input', function() {
+    rangeOutput2.textContent = this.value;
+  });
+</script>
