@@ -29,7 +29,7 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
                 return NotFound();
             }
 
-            var bess =  await _context.Besses
+            var bess = await _context.Besses
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (bess == null)
             {
@@ -37,7 +37,8 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
             }
             bess.CurrentMaxAcOut /= 1000;
             bess.CurrentMaxAcIn /= 1000;
-            
+            bess.ThresholdCurrent /= 1000;
+
             Bess = bess;
             ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
             return Page();
@@ -49,22 +50,23 @@ namespace DotnetAPI.Pages.BessAdmin.BessPage
         {
             Bess.CurrentMaxAcIn *= 1000;
             Bess.CurrentMaxAcOut *= 1000;
+            Bess.ThresholdCurrent *= 1000;
 
             if (!ModelState.IsValid)
             {
                 ViewData["OperationModeId"] = new SelectList(_context.OperationModes, "Id", "Name");
                 foreach (var entry in ModelState)
-{
-    var key = entry.Key;
-    foreach (var error in entry.Value.Errors)
-    {
-        _logger.LogError("ModelState error on '{Field}': {Error}",
-            key,
-            string.IsNullOrWhiteSpace(error.ErrorMessage)
-                ? error.Exception?.Message
-                : error.ErrorMessage);
-    }
-}
+                {
+                    var key = entry.Key;
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        _logger.LogError("ModelState error on '{Field}': {Error}",
+                            key,
+                            string.IsNullOrWhiteSpace(error.ErrorMessage)
+                                ? error.Exception?.Message
+                                : error.ErrorMessage);
+                    }
+                }
                 return Page();
             }
 

@@ -1,97 +1,81 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
+using DotnetAPI.Models.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace DotnetAPI.Pages.Auth;
 
-[AllowAnonymous]
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly SignInManager<AppUser> _signInManager;
 
-    [BindProperty]
-    public string UserNameOrEmail { get; set; }
-    [BindProperty]
-    public string Password { get; set; }
-    public string? AuthMessage { get; set; }
-
-    [BindProperty]
-    public string RegisterUserName { get; set; }
-    [BindProperty]
-    public string RegisterEmail { get; set; }
-    [BindProperty]
-    public string RegisterPassword { get; set; }
-    public string? RegisterMessage { get; set; }
-
-    public IndexModel(ILogger<IndexModel> logger, IHttpClientFactory httpClientFactory)
+    public IndexModel(SignInManager<AppUser> signInManager)
     {
-        _logger = logger;
-        _httpClientFactory = httpClientFactory;
+        _signInManager = signInManager;
     }
 
-    public void OnGet()
+    [BindProperty]
+    public InputModel Input { get; set; } = default!;
+
+    public string? ReturnUrl { get; set; }
+
+    [TempData]
+    public string ErrorMessage { get; set; } = default!;
+
+    public class InputModel
     {
+        [Required]
+        [DataType(DataType.Text), DisplayName("Username")]
+        public string UserName { get; set; } = default!;
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = default!;
     }
 
-    public async Task<IActionResult> OnPostLoginAsync()
+    public void OnGet(string? returnUrl = null)
     {
-        var client = _httpClientFactory.CreateClient();
-        var loginData = new
+        if (!string.IsNullOrEmpty(ErrorMessage))
         {
-            UserNameOrEmail,
-            Password
-        };
-
-        var content = new StringContent(
-            JsonSerializer.Serialize(loginData),
-            Encoding.UTF8,
-            "application/json"
-        );
-
-        var response = await client.PostAsync("http://localhost:5230/auth/login", content);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var json = await response.Content.ReadAsStringAsync();
-            AuthMessage = "Login exitoso: " + json;
-        }
-        else
-        {
-            AuthMessage = "Login fallido";
+            ModelState.AddModelError(string.Empty, ErrorMessage);
         }
 
-        return Page();
+        returnUrl ??= Url.Content("~/");
+
+        // If user is already logged in, redirect
+        if (User.Identity?.IsAuthenticated ?? false)
+        {
+            Response.Redirect(returnUrl);
+        }
+
+        ReturnUrl = returnUrl;
     }
 
-    public async Task<IActionResult> OnPostRegisterAsync()
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
-        var client = _httpClientFactory.CreateClient();
-        var registerData = new
-        {
-            UserName = RegisterUserName,
-            Email = RegisterEmail,
-            Password = RegisterPassword
-        };
+        returnUrl ??= Url.Content("~/");
 
-        var content = new StringContent(
-            JsonSerializer.Serialize(registerData),
-            Encoding.UTF8,
-            "application/json"
-        );
-
-        var response = await client.PostAsync("http://localhost:5230/auth/register", content);
-
-        if (response.IsSuccessStatusCode)
+        if (ModelState.IsValid)
         {
-            RegisterMessage = "Registro exitoso. Ahora puedes iniciar sesión.";
-        }
-        else
-        {
-            RegisterMessage = "Error al registrar usuario. Verifica los datos.";
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, isPersistent: true, lockoutOnFailure: false);
+            
+            if (result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            if (result.IsLockedOut)
+            {
+                return RedirectToPage("./Lockout");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Username or Password is not valid");
+                return Page();
+            }
         }
 
         return Page();

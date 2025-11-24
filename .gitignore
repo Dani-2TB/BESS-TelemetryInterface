@@ -5,6 +5,7 @@
 
 # dotenv files
 .env
+.env_auth
 
 # User-specific files
 *.rsuser
@@ -487,3 +488,5 @@ DotnetAPI.db
 DotnetAPI.http
 *.sln
 *.db*
+
+Migrations/

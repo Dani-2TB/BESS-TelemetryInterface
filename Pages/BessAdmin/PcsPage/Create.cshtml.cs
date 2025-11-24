@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,6 +31,7 @@ namespace DotnetAPI.Pages.BessAdmin.PcsPage
         {
             ViewData["BatteryId"] = new SelectList(_context.Batteries, "Id", "Name");
             ViewData["PcsModelId"] = new SelectList(_context.PcsModels, "Id", "Name");
+
             if (!ModelState.IsValid)
             {
                 return Page();

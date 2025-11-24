@@ -1,62 +1,161 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using DotnetAPI.Data;
+using DotnetAPI.Models.Domain;
 using DotnetAPI.Models;
 using DotNetEnv;
-using DotNetEnv.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using DotnetAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Configure();
+Env.Load(".env");
+builder.Configuration.AddEnvironmentVariables();
+
+ConfigureServices(builder);
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
-    SeedData.Initialize(services);
+    try
+    {
+        // Auto-migrate on startup to ensure DB schema matches code in the device
+        var context = services.GetRequiredService<YuzzContext>();
+        context.Database.Migrate();
+        // Activate journal mode WAL for better concurrency 
+        context.Database.ExecuteSqlRaw("PRAGMA journal_mode=WAL;");
+        await SeedData.InitializeAsync(services);
+    }
+    catch (Exception ex)
+    {
+        services.GetRequiredService<ILogger<Program>>().LogError(ex, "DB Seeding/Migration failed.");
+    }
 }
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // Enforce strict HTTPS in production/staging
     app.UseHsts();
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Enable Swagger in all environments for local device debugging
+app.UseSwagger();
+app.UseSwaggerUI();
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.MapAuthEndpoints();
-
-app.MapStaticAssets();
 app.MapRazorPages();
+app.MapControllers();
+app.MapAuthEndpoints();
+app.MapConfigEndpoints();
 
 app.Run();
 
-
-void Configure()
+void ConfigureServices(WebApplicationBuilder builder)
 {
-    // Database Configuration
     builder.Services.AddDbContext<YuzzContext>(opt =>
         opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    builder.Services.AddAuthorization();
+    // Identity handles Cookie auth by default for Razor Pages
+    builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddEntityFrameworkStores<YuzzContext>()
+    .AddDefaultTokenProviders();
 
-    builder.Services.AddRazorPages();
-    builder.Services.AddHttpClient(); 
+    // Security hardening for session cookies
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.LoginPath = "/Auth/Index";
+        options.AccessDeniedPath = "/Error";
+        options.Cookie.HttpOnly = true; // Prevent XSS stealing
+        options.Cookie.SameSite = SameSiteMode.Strict; // CSRF mitigation
+        options.Events.OnRedirectToLogin = context =>
+        {
+            if (context.Request.Path.StartsWithSegments("/api"))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            }
+            context.Response.Redirect(context.RedirectUri);
+            return Task.CompletedTask;
+        };
+    });
 
+    // JWT setup as a specific scheme. API Controllers must explicitly ask for this scheme
+    // using [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    var jwtKey = builder.Configuration["JWT_TOKEN"] ?? throw new InvalidOperationException("JWT_TOKEN missing");
+
+    builder.Services.AddAuthentication()
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "YuzzAPI",
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["Jwt:Audience"] ?? "YuzzClient",
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero // Strict expiration
+            };
+        });
+
+    builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
+
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("ApiAuth", policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+    });
+
+    builder.Services.AddRazorPages(options =>
+    {
+        options.Conventions.AuthorizeFolder("/BessAdmin");
+    });
+
+    builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddHttpClient();
 
-    var configuration = new ConfigurationBuilder()
-        .AddDotNetEnv(".env", LoadOptions.TraversePath())
-        .Build();
+    // Configure Swagger to allow Bearer token testing in UI
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Yuzz BESS API", Version = "v1" });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                },
+                Array.Empty<string>()
+            }
+        });
+    });
 }

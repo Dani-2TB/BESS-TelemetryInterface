@@ -1,60 +1,111 @@
 using DotnetAPI.Data;
 using DotnetAPI.Models.Domain;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using DotNetEnv;
 
 namespace DotnetAPI.Models;
 
 public static class SeedData
 {
-    public static void Initialize(IServiceProvider serviceProvider)
+    public static async Task InitializeAsync(IServiceProvider serviceProvider)
     {
-        using (var context = new YuzzContext(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<YuzzContext>>()))
+        // Resolve Services via DI
+        var context = serviceProvider.GetRequiredService<YuzzContext>();
+        var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+        // Seed Roles
+        string[] roleNames = { "Admin", "Operator" };
+        foreach (var roleName in roleNames)
         {
-            // Check for seeded items or database to exist
-            if (context is null ||
-                context.Besses is null ||
-                context.OperationModes is null ||
-                context.PcsModels is null)
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
-                throw new ArgumentNullException("Null Database or Entity Context");
+                await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
             }
+        }
 
-            if (context.Besses.Any() ||
-                context.OperationModes.Any() ||
-                context.PcsModels.Any())
+        // Seed Admin User
+        var adminEmail = Env.GetString("YUZZ_EMAIL");
+        if (string.IsNullOrEmpty(adminEmail)) throw new Exception("YUZZ_EMAIL missing"); 
+
+        var adminUser = await userManager.FindByEmailAsync(adminEmail);
+        if (adminUser == null)
+        {
+            var adminPassword = Env.GetString("YUZZ_PASSWORD") 
+                ?? throw new Exception("YUZZ_PASSWORD missing");
+            var adminUsername = Env.GetString("YUZZ_USERNAME") 
+                ?? throw new Exception("YUZZ_USERNAME missing");
+
+            // Fixed RUT generator usage
+            var (rut, dv) = GenerateValidRut(11111111); 
+
+            var newAdmin = new AppUser
             {
-                return; // Database is seeded
-            }
+                UserName = adminUsername,
+                Email = adminEmail,
+                EmailConfirmed = true,
+                Rut = rut,
+                Dv = dv,
+                NombreCompleto = "System Administrator",
+                Cargo = "Root"
+            };
 
+            var result = await userManager.CreateAsync(newAdmin, adminPassword);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(newAdmin, "Admin");
+            } else
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new Exception($"❌ Failed to create Admin User: {errors}");
+            }
+        }
+
+        // Seed Business Data (BESS)
+        if (!context.Besses.Any())
+        {
             var onGrid = new OperationMode { Name = "on_grid" };
             var offGrid = new OperationMode { Name = "off_grid" };
 
             context.OperationModes.AddRange(onGrid, offGrid);
 
-            context.PcsModels.Add(
-                new PcsModel
-                {
-                    Name = "InfyPower BEG1K075G",
-                    RatedPower = 22000,
-                    VoltageMinDc = 150000,
-                    VoltageMaxDc = 1000000,
-                    CurrentMaxDc = 80000,
-                }
-            );
+            context.PcsModels.Add(new PcsModel
+            {
+                Name = "InfyPower BEG1K075G",
+                RatedPower = 22000,
+                VoltageMinDc = 150000,
+                VoltageMaxDc = 1000000,
+                CurrentMaxDc = 80000,
+            });
 
-            context.Besses.Add(
-                new Bess
-                {
-                    Name = "Prototype Config",
-                    CurrentMaxAcIn = 15000,
-                    CurrentMaxAcOut = 30000,
-                    OperationMode = offGrid
-                }
-            );
+            context.Besses.Add(new Bess
+            {
+                Name = "Prototype Config",
+                CurrentMaxAcIn = 15000,
+                CurrentMaxAcOut = 30000,
+                OperationMode = offGrid
+            });
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
+    }
+    private static (int rut, string dv) GenerateValidRut(int rut)
+    {
+        int sum = 0;
+        int multiplier = 2;
+        int tempRut = rut;
+
+        while (tempRut != 0)
+        {
+            sum += (tempRut % 10) * multiplier;
+            tempRut /= 10;
+            multiplier++;
+            if (multiplier == 8) multiplier = 2;
+        }
+
+        int remainder = 11 - (sum % 11);
+        string dv = remainder == 11 ? "0" : remainder == 10 ? "K" : remainder.ToString();
+
+        return (rut, dv);
     }
 }

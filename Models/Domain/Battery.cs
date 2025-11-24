@@ -18,10 +18,10 @@ public class Battery
     [Required, MaxLength(120)]
     public string Name { get; set; } = "noname";
 
-    [Required, DisplayName("Max Soc Threshold"), Range(0, 100)]
+    [Required, DisplayName("Max Soc Threshold"), Range(0, 1000)]
     public int SocMax { get; set; }
 
-    [Required, DisplayName("Min Soc Threshold"), Range(0, 100)]
+    [Required, DisplayName("Min Soc Threshold"), Range(0, 1000)]
     public int SocMin { get; set; }
 
     [Required, DisplayName("Max Current"), Range(0, 4294967296)]
