@@ -12,7 +12,6 @@ using DotnetAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load env vars immediately to ensure DB connection string is available
 Env.Load(".env");
 builder.Configuration.AddEnvironmentVariables();
 
@@ -133,7 +132,6 @@ void ConfigureServices(WebApplicationBuilder builder)
         options.Conventions.AuthorizeFolder("/BessAdmin");
     });
 
-    // Required for API endpoints
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddHttpClient();
