@@ -44,11 +44,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+if (app.Environment.IsDevelopment())
+{    
+    app.UseHttpsRedirection();
+}
+
 // Enable Swagger in all environments for local device debugging
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
